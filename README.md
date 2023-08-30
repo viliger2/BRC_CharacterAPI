@@ -21,4 +21,4 @@ Please consider making a back-up of your save. I've made necessary precautions i
 * Custom animations
 
 # I am a mod maker, why does my character have skates angled at wrong position? 
-I've made a wiki page covering on how to fix it. You can find it ![here](https://github.com/viliger2/BRC_CharacterAPI/wiki/Why-is-are-my-skates-at-the-wrong-angle%3F).
+I've made a wiki page covering on how to fix it. You can find it ![here](https://github.com/viliger2/BRC_CharacterAPI/wiki/Why-are-my-skates-at-the-wrong-angle%3F).
