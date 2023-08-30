@@ -5,10 +5,11 @@ using UnityEngine;
 using Reptile;
 using CharacterAPI;
 
-namespace BRC_CharacterAPI_ExamplePlugin
+namespace ExamplePllugin
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency("com.Viliger.CharacterAPI")] // this is hard dependency on CharacterAPI, without it the mod will not work
+    // Remember to rename your class
     public class CharacterAPIExamplePlugin : BaseUnityPlugin
     {
         // This is your mod's guid, remember to change it, otherwise it will not load if mod with the same name is already present
