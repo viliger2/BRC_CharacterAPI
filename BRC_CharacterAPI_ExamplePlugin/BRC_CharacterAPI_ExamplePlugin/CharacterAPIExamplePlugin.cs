@@ -5,7 +5,7 @@ using UnityEngine;
 using Reptile;
 using CharacterAPI;
 
-namespace ExamplePllugin
+namespace BeatCharacterAPI
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency("com.Viliger.CharacterAPI")] // this is hard dependency on CharacterAPI, without it the mod will not work

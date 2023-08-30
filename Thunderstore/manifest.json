@@ -1,8 +1,8 @@
 {
-    "name": "DisableAnnoyingCutscenes",
-    "version_number": "0.7.0",
-    "website_url": "https://github.com/viliger2/BRC_SmallerMods/tree/main/DisableAnnoyingCutscenes",
-    "description": "Disables cutscenes upon getting new heat level.",
+    "name": "CharacterAPI",
+    "version_number": "0.7.1",
+    "website_url": "https://github.com/viliger2/BRC_CharacterAPI",
+    "description": "API for loading custom characters.",
     "dependencies": [
 	    "BepInEx-BepInExPack-5.4.2100",
 		"viliger-HookGenPatcher-1.2.10"
