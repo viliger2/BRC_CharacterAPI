@@ -1,6 +1,6 @@
 {
     "name": "CharacterAPI",
-    "version_number": "0.7.1",
+    "version_number": "0.7.2",
     "website_url": "https://github.com/viliger2/BRC_CharacterAPI",
     "description": "API for loading custom characters.",
     "dependencies": [

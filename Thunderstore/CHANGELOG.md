@@ -1,4 +1,12 @@
 <details>
+<summary>0.5.1 </summary>
+
+* Fixed character list doubling every time you change character via dance pad.
+* Made SlopCrew incompatible.
+	* _Sadly, playing on SlopCrew with new characters added via CharacterAPI made everyone who don't have the mod crash their game. While SlopCrew added autokick for those players, I decided, for now, to just completely disable ChracterAPI if SlowCrew is present among mods. Once me and NotNite come up with a solution we both agree on, mod will continue disabling itself in presence of SlowCrew._
+* Fixed max outfits check for new modded character being incorrect.
+</details>
+<details>
 <summary>0.5.01 </summary>
 
 * Readme fix because I love markdown.
