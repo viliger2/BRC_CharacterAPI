@@ -37,6 +37,7 @@ namespace CharacterAPI.Hooks
         private static void CharacterSelect_PopulateListOfSelectableCharacters(On.Reptile.CharacterSelect.orig_PopulateListOfSelectableCharacters orig, CharacterSelect self, Player player)
         {
             orig(self, player);
+            selectableCharactesWithMods.Clear();
             foreach (Characters character in self.selectableCharacters)
             {
                 selectableCharactesWithMods.Add(new SelectableCharacterWithMods { characterEnum = character, IsModdedCharacter = false });

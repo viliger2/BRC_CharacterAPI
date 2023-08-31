@@ -12,6 +12,7 @@ using static CharacterAPI.ExtensionMethods.CharacterSelectExtensions;
 namespace CharacterAPI
 {
     [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.5.0")]
+    [BepInIncompatibility("SlopCrew.Plugin")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;
