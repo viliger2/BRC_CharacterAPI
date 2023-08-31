@@ -52,7 +52,7 @@ namespace CharacterAPI
 
         public void AddOutfit(Material material, string name = "")
         {
-            if (outfits.Count > 4)
+            if (outfits.Count > 3)
             {
                 CharacterAPI.logger.LogWarning($"Can't have more than 4 outfits on character {this.characterName}, ignoring outfit {name}.");
                 return;
@@ -94,7 +94,7 @@ namespace CharacterAPI
         {
             if (string.IsNullOrEmpty(characterName))
             {
-                CharacterAPI.logger.LogWarning("Attempted to add charcter without a name. Ignoring...");
+                CharacterAPI.logger.LogWarning("Attempted to add a charcter without a name. Ignoring...");
                 return false;
             }
 

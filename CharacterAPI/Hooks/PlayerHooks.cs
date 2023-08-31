@@ -81,12 +81,9 @@ namespace CharacterAPI.Hooks
             {
                 c.Index++;
                 c.RemoveRange(16);
-                //c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Action<Reptile.Player>>((p) =>
                 {
                     Characters character = p.character;
-                    logger.LogMessage("SetCharacter - current character: " + character.ToString());
-                    //CharacterSelectExtensions.CharacterWithMods characterWithMods = CharacterSelectExtensions.selectableCharactesWithMods.Find(x => x.characterEnum == character);
                     if (Enum.IsDefined(typeof(Characters), character))
                     {
                         p.characterVisual = p.characterConstructor.CreateNewCharacterVisual(character, p.animatorController, !p.isAI, p.motor.groundDetection.groundLimit);
