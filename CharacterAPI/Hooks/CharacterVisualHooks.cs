@@ -1,10 +1,10 @@
-﻿using CharacterAPI.ExtensionMethods;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using CharacterAPI;
 
 namespace CharacterAPI.Hooks
 {
@@ -23,8 +23,8 @@ namespace CharacterAPI.Hooks
                 return orig(c);
             }
 
-            CharacterSelectExtensions.SelectableCharacterWithMods selectableCharacterWithMods = CharacterSelectExtensions.GetCharacterWithMods(c);
-            return selectableCharacterWithMods.moddedCharacter.bounceHash;
+            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+            return moddedCharacter.bounceHash;
         }
 
         private static int CharacterVisual_GetCharacterFreestyleAnim(On.Reptile.CharacterVisual.orig_GetCharacterFreestyleAnim orig, Reptile.Characters c)
@@ -34,8 +34,8 @@ namespace CharacterAPI.Hooks
                 return orig(c);
             }
 
-            CharacterSelectExtensions.SelectableCharacterWithMods selectableCharacterWithMods = CharacterSelectExtensions.GetCharacterWithMods(c);
-            return selectableCharacterWithMods.moddedCharacter.freestyleHash;
+            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+            return moddedCharacter.freestyleHash;
         }
     }
 }

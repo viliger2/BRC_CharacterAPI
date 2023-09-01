@@ -1,9 +1,9 @@
-﻿using CharacterAPI.ExtensionMethods;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Reptile;
 using System;
 using UnityEngine;
+using static CharacterAPI.CharacterAPI;
 
 namespace CharacterAPI.Hooks
 {
@@ -12,6 +12,26 @@ namespace CharacterAPI.Hooks
         public static void InitHooks()
         {
             On.Reptile.CharacterConstructor.CreateCharacterMaterial += CharacterConstructor_CreateCharacterMaterial;
+            On.Reptile.CharacterConstructor.CreateNewCharacterVisual += CharacterConstructor_CreateNewCharacterVisual;
+        }
+
+        private static CharacterVisual CharacterConstructor_CreateNewCharacterVisual(On.Reptile.CharacterConstructor.orig_CreateNewCharacterVisual orig, CharacterConstructor self, Characters character, RuntimeAnimatorController controller, bool IK, float setGroundAngleLimit)
+        {
+            if (Enum.IsDefined(typeof(Characters), character))
+            {
+                return orig(self, character,controller, IK, setGroundAngleLimit);
+            }
+
+            ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            CharacterVisual characterVisual = UnityEngine.Object.Instantiate(moddedCharacter.characterVisual).AddComponent<CharacterVisual>();
+            SkinnedMeshRenderer meshRenderer = characterVisual.GetComponentInChildren<SkinnedMeshRenderer>();
+            if (meshRenderer)
+            {
+                CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, meshRenderer.material);
+            }
+            characterVisual.Init(character, controller, IK, setGroundAngleLimit);
+            characterVisual.gameObject.SetActive(true);
+            return characterVisual;
         }
 
         private static Material CharacterConstructor_CreateCharacterMaterial(On.Reptile.CharacterConstructor.orig_CreateCharacterMaterial orig, CharacterConstructor self, Characters character, int outfit)
@@ -22,40 +42,13 @@ namespace CharacterAPI.Hooks
             }
             else
             {
-                CharacterSelectExtensions.SelectableCharacterWithMods characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-                return self.CreateCharacterMaterial(characterWithMods, outfit);
-            }
-        }
+                ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                Material material = moddedCharacter.loadedCharacterMaterials[outfit];
 
-        private static void CharacterConstructor_SetMoveStyleSkinsForCharacter(MonoMod.Cil.ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<Reptile.Core>("get_Instance"),
-                x => x.MatchCallOrCallvirt<Reptile.Core>("get_SaveManager"),
-                x => x.MatchCallOrCallvirt<Reptile.SaveManager>("get_CurrentSaveSlot"),
-                x => x.MatchLdarg(out _)))
-            {
-                c.Next.OpCode = OpCodes.Ldarg_2;
-                c.Next.Operand = null;
-                c.Index++;
-                c.RemoveRange(5);
-                c.EmitDelegate<Func<Characters, int>>((character) =>
-                {
-                    CharacterSelectExtensions.SelectableCharacterWithMods characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-                    if (characterWithMods.IsModdedCharacter)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return Core.Instance.SaveManager.CurrentSaveSlot.GetCharacterProgress(character).moveStyleSkin;
-                    }
-                });
-            }
-            else
-            {
-                CharacterAPI.logger.LogError("CharacterConstructor::SetMoveStyleSkinsForCharacter hook failed.");
+                // should probably move this to initialization, but I am not sure how to load game's objects without Adressables
+                CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, material);
+
+                return material;
             }
         }
     }

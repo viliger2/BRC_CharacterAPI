@@ -1,16 +1,24 @@
-﻿using CharacterAPI.ExtensionMethods;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Reptile;
 using System;
+using UnityEngine.Playables;
+using UnityEngine;
 using static CharacterAPI.CharacterAPI;
-using static CharacterAPI.ExtensionMethods.CharacterSelectExtensions;
-using static CharacterAPI.ExtensionMethods.CharacterSelectUIExtensions;
+using System.Collections.Generic;
 
 namespace CharacterAPI.Hooks
 {
     public class CharacterSelectHooks
     {
+        public static List<SelectableCharacterWithMods> selectableCharactesWithMods = new List<SelectableCharacterWithMods>();
+
+        public struct SelectableCharacterWithMods
+        {
+            public bool IsModdedCharacter;
+            public Characters characterEnum;
+        }
+
         public static void InitHooks()
         {
             On.Reptile.CharacterSelect.PopulateListOfSelectableCharacters += CharacterSelect_PopulateListOfSelectableCharacters;
@@ -29,8 +37,18 @@ namespace CharacterAPI.Hooks
             }
             else
             {
-                SelectableCharacterWithMods moddedCharacter = CharacterSelectExtensions.GetCharacterWithMods(character);
-                self.CreateCharacterSelectCharacter(moddedCharacter, numInCircle, startState);
+                Player player = self.player;
+                CharacterVisual characterVisual = player.CharacterConstructor.CreateNewCharacterVisual(character, player.animatorController, true, player.motor.groundDetection.groundLimit);
+                int outfit = Core.instance.SaveManager.CurrentSaveSlot.GetCharacterProgress(character).outfit;
+                Material sharedMaterial = player.characterConstructor.CreateCharacterMaterial(character, outfit);
+
+                characterVisual.mainRenderer.sharedMaterial = sharedMaterial;
+                self.CharactersInCircle[numInCircle] = characterVisual.gameObject.AddComponent<CharacterSelectCharacter>();
+                self.charactersInCircle[numInCircle].transform.position = self.characterPositions[numInCircle];
+                self.charactersInCircle[numInCircle].transform.rotation = Quaternion.LookRotation(self.characterDirections[numInCircle] * -1f);
+                self.charactersInCircle[numInCircle].transform.parent = self.tf;
+                self.charactersInCircle[numInCircle].Init(self, character, self.charCollision, self.charTrigger, self.tf.position, UnityEngine.Object.Instantiate(self.swapSequence, self.charactersInCircle[numInCircle].transform).GetComponent<PlayableDirector>());
+                self.charactersInCircle[numInCircle].SetState(startState);
             }
         }
 
@@ -44,7 +62,10 @@ namespace CharacterAPI.Hooks
             }
             foreach (CharacterAPI.ModdedCharacter moddedCharacter in CharacterAPI.ModdedCharacters)
             {
-                selectableCharactesWithMods.Add(new SelectableCharacterWithMods { characterEnum = (Characters)CharacterSelectExtensions.STARTING_VALUE + CharacterAPI.ModdedCharacters.IndexOf(moddedCharacter), IsModdedCharacter = true, moddedCharacter = moddedCharacter });
+                if (self.player.character != moddedCharacter.characterEnum)
+                {
+                    selectableCharactesWithMods.Add(new SelectableCharacterWithMods { characterEnum = moddedCharacter.characterEnum, IsModdedCharacter = true });
+                }
             }
         }
 
@@ -193,7 +214,7 @@ namespace CharacterAPI.Hooks
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Action<Reptile.CharacterSelect>>((cs) =>
                 {
-                    cs.characterSelectUI.SetCharacterInformation(selectableCharactesWithMods[cs.selection]);
+                    cs.characterSelectUI.SetCharacterInformation(selectableCharactesWithMods[cs.selection].characterEnum);
                 });
             }
             else
@@ -287,7 +308,7 @@ namespace CharacterAPI.Hooks
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Action<Reptile.CharacterSelect>>(((cs) =>
                 {
-                    cs.characterSelectUI.SetCharacterInformation(selectableCharactesWithMods[cs.selection]);
+                    cs.characterSelectUI.SetCharacterInformation(selectableCharactesWithMods[cs.selection].characterEnum);
                 }));
             }
             else

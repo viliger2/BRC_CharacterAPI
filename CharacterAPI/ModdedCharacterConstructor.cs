@@ -186,9 +186,11 @@ namespace CharacterAPI
 
             newCharacter.characterVisual = gameObject;
 
+            newCharacter.characterEnum = (Characters)(CharacterAPI.STARTING_VALUE + CharacterAPI.ModdedCharacters.Count);
+
             CharacterAPI.ModdedCharacters.Add(newCharacter);
 
-            CharacterAPI.logger.LogMessage($"Character {characterName} successfully added.");
+            CharacterAPI.logger.LogMessage($"Character {characterName} with enum {newCharacter.characterEnum} successfully added.");
 
             return true;
         }

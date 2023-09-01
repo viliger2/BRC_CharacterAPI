@@ -1,5 +1,4 @@
-﻿using CharacterAPI.ExtensionMethods;
-using Reptile;
+﻿using Reptile;
 using System;
 
 namespace CharacterAPI.Hooks
@@ -22,8 +21,8 @@ namespace CharacterAPI.Hooks
             }
             else
             {
-                var characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-                orig(self, ref currentPriority, characterWithMods.moddedCharacter.tempAudioCharacter, audioClipID, audioSource, playbackPriority);
+                var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                orig(self, ref currentPriority, moddedCharacter.tempAudioCharacter, audioClipID, audioSource, playbackPriority);
             }
         }
 
@@ -33,8 +32,8 @@ namespace CharacterAPI.Hooks
             {
                 return orig(self, character, audioClipID);
             }
-            var characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-            return orig(self, characterWithMods.moddedCharacter.tempAudioCharacter, audioClipID);
+            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            return orig(self, moddedCharacter.tempAudioCharacter, audioClipID);
         }
 
         private static Reptile.SfxCollectionID AudioManager_GetCharacterVoiceSfxCollection(On.Reptile.AudioManager.orig_GetCharacterVoiceSfxCollection orig, Reptile.AudioManager self, Reptile.Characters character)
@@ -43,8 +42,8 @@ namespace CharacterAPI.Hooks
             {
                 return orig(self, character);
             }
-            var characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-            return orig(self, characterWithMods.moddedCharacter.tempAudioCharacter);
+            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            return orig(self, moddedCharacter.tempAudioCharacter);
         }
     }
 }

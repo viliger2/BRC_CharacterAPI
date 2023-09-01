@@ -1,10 +1,8 @@
-﻿using CharacterAPI.ExtensionMethods;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Reptile;
 using System;
 using UnityEngine;
-using static CharacterAPI.ExtensionMethods.CharacterSelectExtensions;
 
 namespace CharacterAPI.Hooks
 {
@@ -39,9 +37,8 @@ namespace CharacterAPI.Hooks
                     }
                     else
                     {
-                        //CharacterWithMods characterWithMods = selectableCharactesWithMods.Find(x => x.characterEnum == character);
-                        SelectableCharacterWithMods characterWithMods = GetCharacterWithMods(character);
-                        return characterWithMods.moddedCharacter.loadedCharacterMaterials[skinIndex] != null;
+                        var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                        return moddedCharacter.loadedCharacterMaterials[skinIndex] != null;
                     }
                 });
             }
@@ -63,11 +60,12 @@ namespace CharacterAPI.Hooks
             {
                 if (!self.IsTransitioning && self.buttonClicked == null)
                 {
-                    //CharacterWithMods characterWithMods = selectableCharactesWithMods.Find(x => x.characterEnum == character);
-                    SelectableCharacterWithMods characterWithMods = GetCharacterWithMods(character);
-                    Material material = self.player.characterConstructor.CreateCharacterMaterial(characterWithMods, skinIndex);
+                    var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                    Material material = moddedCharacter.loadedCharacterMaterials[skinIndex];
+
                     if (material)
                     {
+                        CharacterAPI.AttemptToFixShaderCharacter(self.player.characterConstructor.characterLoader, material);
                         self.previewCharacterVisual.mainRenderer.material = material;
                     }
                 }
@@ -82,11 +80,11 @@ namespace CharacterAPI.Hooks
                 return orig(outfitUnlockables, characterIndexMap, characterIndex, outfitIndex);
             }
 
-            SelectableCharacterWithMods characterWithMods = GetCharacterWithMods(character);
-            string name = characterWithMods.moddedCharacter.outfitNames[outfitIndex];
+            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            string name = moddedCharacter.outfitNames[outfitIndex];
 
             OutfitUnlockable outfitUnlockable = ScriptableObject.CreateInstance<OutfitUnlockable>();
-            outfitUnlockable.outfitName = name != null ? name : characterWithMods.moddedCharacter.Name; // TODO: give people option to name the skins as they want
+            outfitUnlockable.outfitName = name != null ? name : moddedCharacter.Name;
             outfitUnlockable.character = character;
             outfitUnlockable.outfitIndex = outfitIndex;
             outfitUnlockable.IsDefault = true;

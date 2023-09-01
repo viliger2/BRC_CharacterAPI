@@ -7,15 +7,15 @@ using Reptile;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static CharacterAPI.ExtensionMethods.CharacterSelectExtensions;
 
 namespace CharacterAPI
 {
     [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.5.1")]
-    [BepInIncompatibility("SlopCrew.Plugin")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;
+
+        public const int STARTING_VALUE = (int)Characters.MAX + 1;
 
         internal static List<ModdedCharacter> ModdedCharacters = new List<ModdedCharacter>();
 
@@ -34,6 +34,7 @@ namespace CharacterAPI
             public Characters characterGraffitiBase;
             public int freestyleHash;
             public int bounceHash;
+            public Characters characterEnum;
         }
 
         public void Awake()
@@ -47,16 +48,23 @@ namespace CharacterAPI
 
             logger = Logger;
 
+            AudioManagerHooks.InitHooks();
+            CharacterConstructorHooks.InitHooks();
+            CharacterSelectCharacterHooks.InitHooks();
             CharacterSelectHooks.InitHooks();
+            CharacterSelectUIHooks.InitHooks();
+            CharacterVisualHooks.InitHooks();
+            GraffitiArtInfoHooks.InitHooks();
+            OutfitSwitchMenuHooks.InitHooks();
             PlayerHooks.InitHooks();
             SaveSlotDataHooks.InitHooks();
-            CharacterConstructorHooks.InitHooks();
-            AudioManagerHooks.InitHooks();
-            OutfitSwitchMenuHooks.InitHooks();
-            GraffitiArtInfoHooks.InitHooks();
-            CharacterVisualHooks.InitHooks();
 
             //ModdedCharacterLoader.LoadAssetBundle(Info);
+        }
+
+        public static ModdedCharacter GetModdedCharacter(Characters character)
+        {
+            return ModdedCharacters.Find(x => x.characterEnum == character);
         }
 
         public static void AttemptToFixShaderCharacter(CharacterLoader? loader, Material material)

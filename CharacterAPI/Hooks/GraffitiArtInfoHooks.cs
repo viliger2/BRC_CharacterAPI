@@ -1,5 +1,4 @@
-﻿using CharacterAPI.ExtensionMethods;
-using Reptile;
+﻿using Reptile;
 using System;
 
 namespace CharacterAPI.Hooks
@@ -18,10 +17,10 @@ namespace CharacterAPI.Hooks
                 return orig(self, character);
             }
 
-            var characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-            if (characterWithMods.moddedCharacter.usePersonalGrafitti)
+            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            if (moddedCharacter.usePersonalGrafitti)
             {
-                GraffitiArt art = characterWithMods.moddedCharacter.personalGrafitti;
+                GraffitiArt art = moddedCharacter.personalGrafitti;
                 // should probably move this to initialization, but I am not sure how to load game's objects without Adressables
                 CharacterAPI.AttemtToFixShaderGraffiti(GetGraffitiLoader(), art.graffitiMaterial);
 

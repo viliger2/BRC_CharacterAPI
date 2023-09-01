@@ -1,5 +1,4 @@
-﻿using CharacterAPI.ExtensionMethods;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 using Reptile;
 using System;
 
@@ -64,8 +63,8 @@ namespace CharacterAPI.Hooks
             var progress = ModdedCharacterProgress.GetModdedCharacterProgress(character);
             if (progress == null)
             {
-                var characterWithMods = CharacterSelectExtensions.GetCharacterWithMods(character);
-                return ModdedCharacterProgress.NewModdedCharacterProgress(character, characterWithMods.moddedCharacter.defaultOutfit, characterWithMods.moddedCharacter.defaultMoveStyle, 0);
+                var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                return ModdedCharacterProgress.NewModdedCharacterProgress(character, moddedCharacter.defaultOutfit, moddedCharacter.defaultMoveStyle, 0);
             }
             return progress;
         }
