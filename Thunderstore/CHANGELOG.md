@@ -1,4 +1,13 @@
 <details>
+<summary>0.5.2 </summary>
+
+* Fixed currently played as modded character being selectable on dance pad.
+	* _This comes with pretty decent refactor job, so while I tested everything that it afffects, you still might encounter a new crash. Please, report all crashes on github or in my DMs on discord._
+* SlowCrew is not longer incompatible.
+	* _SlopCrew now assignes modded characters as Red for everyone who don't have the mods. While you won't see other people using mods, at least you can now yourself play as modded character and be allowed to join AND not crash the server._
+</details>
+
+<details>
 <summary>0.5.1 </summary>
 
 * Fixed character list doubling every time you change character via dance pad.
