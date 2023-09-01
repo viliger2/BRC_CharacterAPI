@@ -3,6 +3,8 @@ Custom character loader for Bomb Rush Cyberfunk. Currently support importing mod
 
 All assmblies in this repository are stripped down versions made with NStrip.
 
+You can find a guide on making custom characters [here](https://github.com/viliger2/BRC_CharacterAPI/wiki/Creating-new-character-via-plugin).
+
 Please consider making a back-up of your save. I've made necessary precautions in the code so you shouldn't bork your save, but just to be safe until I get enough reports that things are stable - back it up.
 
 ## Known issues
