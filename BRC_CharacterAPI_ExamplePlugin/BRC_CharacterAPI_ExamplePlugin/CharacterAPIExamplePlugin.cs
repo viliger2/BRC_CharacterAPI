@@ -4,6 +4,7 @@ using UnityEngine.TextCore.Text;
 using UnityEngine;
 using Reptile;
 using CharacterAPI;
+using System.Linq;
 
 namespace BeatCharacterAPI
 {
@@ -17,7 +18,7 @@ namespace BeatCharacterAPI
         // This is your mod's name, you can do whatever with it
         public const string ModName = "CharacterAPI_Beat";
         // This is your mod's version
-        public const string ModVer = "0.9.0";
+        public const string ModVer = "1.0.0";
 
         public void Awake()
         {
@@ -38,9 +39,7 @@ namespace BeatCharacterAPI
             // ON_FOOT is used when character puts away the ride, SPECIAL is for story things and MAX is for math stuff
             // outside of first three, other values should not be used
             beat.defaultMoveStyle = MoveStyle.INLINE;
-            // Character's audio base, since custom audio is not yet implemented, we use existing character as base
-            // for our sounds, can take pretty much any value outside of MAX and NONE
-            beat.tempAudioBase = Characters.legendFace;
+
             // Character's freestyle, it determines they do once you leave the dance pad and they just stand around dancing
             beat.freestyleType = ModdedCharacterConstructor.FreestyleType.freestyle16;
             // Character's bounce, what they do when they are selectable on dance pad
@@ -59,6 +58,15 @@ namespace BeatCharacterAPI
             // you can comment the line above and uncommend this one and select character that will be
             // base for our personal graffiti
             //beat.personalGraffitiBase = Characters.blockGuy;
+
+            // Sounds effects are optional, but if you want them you only need a single line
+            // as long as you added all of the sound effect to asset bundle and used
+            // "Prep audio files" right click menu
+            beat.audioClips = bundle.LoadAllAssets<AudioClip>().ToList();
+            // Character's audio base, if you don't want to use custom sounds
+            // then comment the line above, uncomment the line below
+            // and select a character as base
+            //beat.tempAudioBase = Characters.legendFace;
 
             // This line finalized and add character to the game
             // if you character is not in the game, remember to check the log for errors

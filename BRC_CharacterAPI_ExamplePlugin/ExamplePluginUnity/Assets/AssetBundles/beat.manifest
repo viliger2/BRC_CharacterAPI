@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4050249392
+CRC: 1002898192
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 096f60a2572f80954d74df38bed554f6
+    Hash: e4dd204dfd65e625abeecd3e843436bb
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 4cb0d85d20f3431ee3e0ea2a686fbd31
+    Hash: 7396876dbf401cdbd3583d10b38e7548
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,6 +21,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
 - Class: 90
   Script: {instanceID: 0}
 - Class: 95
@@ -29,11 +31,27 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Beat/Sounds/VoiceBoostTrick/0_boost.wav
+- Assets/Beat/Sounds/VoiceGetHit/8_gethit.wav
+- Assets/Beat/Sounds/VoiceTalk/15_talk.wav
+- Assets/Beat/Sounds/VoiceCombo/1_combo.wav
+- Assets/Beat/Sounds/VoiceDie/5_die.wav
+- Assets/Beat/Sounds/VoiceGetHit/9_gethit.wav
 - Assets/Beat/beat_no_blades.prefab
 - Assets/Beat/Materials/beatFuture.mat
+- Assets/Beat/Sounds/VoiceGetHit/11_gethit.wav
+- Assets/Beat/Sounds/VoiceCombo/2_combo.wav
 - Assets/Beat/Textures/graffitiTexture.png
 - Assets/Beat/Materials/beatCombo.mat
+- Assets/Beat/Sounds/VoiceGetHit/7_gethit.wav
+- Assets/Beat/Sounds/VoiceGetHit/10_gethit.wav
 - Assets/Beat/Materials/beatCorn.mat
 - Assets/Beat/Materials/beatDefault.mat
+- Assets/Beat/Sounds/VoiceFallingDamage/6_falldamage.wav
+- Assets/Beat/Sounds/VoiceGetHit/12_gethit.wav
+- Assets/Beat/Sounds/VoiceDie/4_die.wav
 - Assets/Beat/Materials/beatGraffiti.mat
+- Assets/Beat/Sounds/VoiceJump/13_jump.wav
+- Assets/Beat/Sounds/VoiceCombo/3_combo.wav
+- Assets/Beat/Sounds/VoiceJump/14_jump.wav
 Dependencies: []
