@@ -13,7 +13,7 @@ You can find a guide on making custom characters [here](https://github.com/vilig
 * Custom personal sprays load as gray squares. This will also hopefully be fixed in the future with implementation of save system.
 
 ## Short term goals (things that will most likely come in near future)
-* Implement custom voice support
+* ~~Implement custom voice support~~ Done
 * Implement save system for custom characters (currently nothing you setup your custom character with saves on exit)
 * Maybe rewrite parts of the code, since by the end I got lazy and started using On hooks instead of IL
 

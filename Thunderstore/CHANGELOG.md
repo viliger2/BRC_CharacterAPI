@@ -1,4 +1,13 @@
 <details>
+<summary>0.6.0 </summary>
+
+* Implemented custom voice suppport.
+	* _It is not as straightforward as I wish it would be, but the guide covers it and example plugin has everything you need._
+</details>
+
+<details>
+
+<details>
 <summary>0.5.2 </summary>
 
 * Fixed currently played as modded character being selectable on dance pad.

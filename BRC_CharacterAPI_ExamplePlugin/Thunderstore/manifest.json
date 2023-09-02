@@ -1,10 +1,10 @@
 {
     "name": "Beat_CharacterAPI",
-    "version_number": "0.9.1",
+    "version_number": "1.0.0",
     "website_url": "https://github.com/viliger2/BRC_CharacterAPI/tree/main/BRC_CharacterAPI_ExamplePlugin",
-    "description": "Beat is here to join BRC. Completely custom character with personal graffiti!",
+    "description": "Beat is here to join BRC. Completely custom character with personal graffiti and sounds!",
     "dependencies": [
 	    "BepInEx-BepInExPack-5.4.2100",
-		"viliger-CharacterAPI-0.7.0"
+		"viliger-CharacterAPI-0.7.4"
     ]
 }
