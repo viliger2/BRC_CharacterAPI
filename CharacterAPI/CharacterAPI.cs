@@ -1,21 +1,18 @@
 ﻿using BepInEx;
-using CharacterAPI;
 using CharacterAPI.Hooks;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using Reptile;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CharacterAPI
 {
-    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.5.2")]
+    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.6.0")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;
 
-        public const int STARTING_VALUE = (int)Characters.MAX + 1;
+        public const int CHARACTER_STARTING_VALUE = (int)Characters.MAX + 1;
+        public const int VOICE_STARTING_VALUE = (int)SfxCollectionID.MAX + 1;
 
         internal static List<ModdedCharacter> ModdedCharacters = new List<ModdedCharacter>();
 
@@ -28,19 +25,20 @@ namespace CharacterAPI
             public GameObject characterVisual;
             public int defaultOutfit;
             public MoveStyle defaultMoveStyle;
-            public Characters tempAudioCharacter;
+            public Characters characterVoiceBase;
             public bool usePersonalGrafitti;
             public Reptile.GraffitiArt personalGrafitti;
             public Characters characterGraffitiBase;
             public int freestyleHash;
             public int bounceHash;
             public Characters characterEnum;
+            public SfxCollectionID voiceId;
+            public List<AudioClip> audioClips;
         }
 
         public void Awake()
         {
             // TODO:
-            // Custom sounds
             // Save system
             // very future TODO:
             // custom models for outfits
@@ -54,6 +52,7 @@ namespace CharacterAPI
             CharacterSelectHooks.InitHooks();
             CharacterSelectUIHooks.InitHooks();
             CharacterVisualHooks.InitHooks();
+            CoreHooks.InitHooks();
             GraffitiArtInfoHooks.InitHooks();
             OutfitSwitchMenuHooks.InitHooks();
             PlayerHooks.InitHooks();

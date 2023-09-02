@@ -46,6 +46,8 @@ namespace CharacterAPI
 
         public BounceType bounceType = BounceType.bounce;
 
+        public List<AudioClip> audioClips = new List<AudioClip>();
+
         private List<Outfit> outfits = new List<Outfit>();
 
         private PersonalGraffiti personalGraffiti;
@@ -114,6 +116,8 @@ namespace CharacterAPI
 
             newCharacter.Name = characterName;
 
+            newCharacter.characterEnum = (Characters)(CharacterAPI.CHARACTER_STARTING_VALUE + CharacterAPI.ModdedCharacters.Count);
+
             newCharacter.outfitNames = new string[4];
             newCharacter.loadedCharacterMaterials = new Material[4];
 
@@ -128,13 +132,14 @@ namespace CharacterAPI
             newCharacter.defaultOutfit = Mathf.Clamp(defaultOutfit, 0, 3);
             newCharacter.defaultMoveStyle = defaultMoveStyle;
 
-            newCharacter.tempAudioCharacter = tempAudioBase;
+            newCharacter.characterVoiceBase = tempAudioBase;
 
             newCharacter.freestyleHash = Animator.StringToHash("freestyle" + ((int)freestyleType + 1));
             if (bounceType == BounceType.bounce)
             {
                 newCharacter.bounceHash = Animator.StringToHash("bounce");
-            } else 
+            }
+            else
             {
                 newCharacter.bounceHash = Animator.StringToHash("softBounce" + ((int)freestyleType));
             }
@@ -159,6 +164,16 @@ namespace CharacterAPI
             {
                 newCharacter.usePersonalGrafitti = false;
                 newCharacter.characterGraffitiBase = personalGraffitiBase;
+            }
+
+            if (audioClips.Count > 0)
+            {
+                newCharacter.voiceId = (SfxCollectionID)(CharacterAPI.VOICE_STARTING_VALUE + CharacterAPI.ModdedCharacters.Count);
+                newCharacter.audioClips = audioClips;
+            }
+            else
+            {
+                newCharacter.voiceId = SfxCollectionID.NONE;
             }
 
             // creating characterVisual
@@ -186,11 +201,17 @@ namespace CharacterAPI
 
             newCharacter.characterVisual = gameObject;
 
-            newCharacter.characterEnum = (Characters)(CharacterAPI.STARTING_VALUE + CharacterAPI.ModdedCharacters.Count);
 
             CharacterAPI.ModdedCharacters.Add(newCharacter);
 
-            CharacterAPI.logger.LogMessage($"Character {characterName} with enum {newCharacter.characterEnum} successfully added.");
+            if (newCharacter.voiceId != SfxCollectionID.NONE)
+            {
+                CharacterAPI.logger.LogMessage($"Character {characterName} with Characters enum {newCharacter.characterEnum} and SfxCollectionID {newCharacter.voiceId} successfully added.");
+            }
+            else
+            {
+                CharacterAPI.logger.LogMessage($"Character {characterName} with enum {newCharacter.characterEnum} successfully added.");
+            }
 
             return true;
         }

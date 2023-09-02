@@ -2,8 +2,6 @@
 using MonoMod.Cil;
 using Reptile;
 using System;
-using UnityEngine;
-using static CharacterAPI.CharacterAPI;
 
 namespace CharacterAPI.Hooks
 {
@@ -11,28 +9,43 @@ namespace CharacterAPI.Hooks
     {
         public static void InitHooks()
         {
-            On.Reptile.Player.PlayVoice += Player_PlayVoice;
+            IL.Reptile.Player.PlayVoice += Player_PlayVoice;
         }
 
-        // better off redoing this with IL hook, but for now leave it as is
-        private static void Player_PlayVoice(On.Reptile.Player.orig_PlayVoice orig, Player self, AudioClipID audioClipID, VoicePriority voicePriority, bool fromPlayer)
+        private static void Player_PlayVoice(ILContext il)
         {
-            Characters character = self.character;
-            if (Enum.IsDefined(typeof(Characters), character))
+            ILCursor c = new ILCursor(il);
+            if(c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdarg(out _),
+                x => x.MatchLdfld<Reptile.Player>("audioManager"),
+                x => x.MatchLdarg(out _),
+                x => x.MatchLdfld<Reptile.Player>("audioManager"),
+                x => x.MatchLdfld<Reptile.AudioManager>("characterToVoiceCollection"),
+                x => x.MatchLdarg(out _),
+                x => x.MatchLdfld<Reptile.Player>("character")))
             {
-                orig(self, audioClipID, voicePriority, fromPlayer);
-            }
-            else
+                c.Index++;
+                c.RemoveRange(10);
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Action<Reptile.Player, Reptile.AudioClipID>>((p, aci) =>
+                {
+                    if(Enum.IsDefined(typeof(Characters), p.character))
+                    {
+                        p.audioManager.PlaySfxGameplay(p.audioManager.characterToVoiceCollection[(int)p.character], aci);
+                    }
+
+                    CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(p.character);
+                    if(moddedCharacter.voiceId != SfxCollectionID.NONE)
+                    {
+                        p.audioManager.PlaySfxGameplay(moddedCharacter.voiceId, aci);                    }
+                    else
+                    {
+                        p.audioManager.PlaySfxGameplay(p.audioManager.characterToVoiceCollection[(int)moddedCharacter.characterVoiceBase], aci);
+                    }
+                });
+            } else
             {
-                var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-                if (fromPlayer)
-                {
-                    self.audioManager.PlayVoice(ref self.currentVoicePriority, moddedCharacter.tempAudioCharacter, audioClipID, self.playerGameplayVoicesAudioSource, voicePriority);
-                }
-                else
-                {
-                    self.audioManager.PlaySfxGameplay(self.audioManager.characterToVoiceCollection[(int)moddedCharacter.tempAudioCharacter], audioClipID);
-                }
+                CharacterAPI.logger.LogError("Player::PlayVoice hook failed.");
             }
         }
     }
