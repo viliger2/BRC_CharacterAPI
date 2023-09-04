@@ -1,6 +1,7 @@
 ﻿using Reptile;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Bindings;
 
 namespace CharacterAPI.Hooks
 {
@@ -24,26 +25,30 @@ namespace CharacterAPI.Hooks
         private static void Core_CreateSubSystems(On.Reptile.Core.orig_CreateSubSystems orig, Reptile.Core self)
         {
             orig(self);
-
             foreach (CharacterAPI.ModdedCharacter moddedCharacter in CharacterAPI.ModdedCharacters)
             {
-                if (moddedCharacter.voiceId != Reptile.SfxCollectionID.NONE)
-                {
-                    var sfxCollection = ScriptableObject.CreateInstance<Reptile.SfxCollection>();
-                    sfxCollection.name = $"Voice{moddedCharacter.Name}Collection";
+                AddModdedCharacterSfx(self, moddedCharacter);
+            }
+        }
 
-                    sfxCollection.audioClipContainers = new SfxCollection.RandomAudioClipContainer[7];
+        private static void AddModdedCharacterSfx(Core self, CharacterAPI.ModdedCharacter moddedCharacter)
+        {
+            if (moddedCharacter.voiceId != Reptile.SfxCollectionID.NONE)
+            {
+                var sfxCollection = ScriptableObject.CreateInstance<Reptile.SfxCollection>();
+                sfxCollection.name = $"Voice{moddedCharacter.Name}Collection";
 
-                    sfxCollection.audioClipContainers[0] = CreateRandomAudioClipContainer(AudioClipID.VoiceBoostTrick, moddedCharacter.audioClips, VOICE_BOOST);
-                    sfxCollection.audioClipContainers[1] = CreateRandomAudioClipContainer(AudioClipID.VoiceCombo, moddedCharacter.audioClips, VOICE_COMBO);
-                    sfxCollection.audioClipContainers[2] = CreateRandomAudioClipContainer(AudioClipID.VoiceDie, moddedCharacter.audioClips, VOICE_DIE);
-                    sfxCollection.audioClipContainers[3] = CreateRandomAudioClipContainer(AudioClipID.VoiceDieFall, moddedCharacter.audioClips, VOICE_DIEFALL);
-                    sfxCollection.audioClipContainers[4] = CreateRandomAudioClipContainer(AudioClipID.VoiceGetHit, moddedCharacter.audioClips, VOICE_GETHIT);
-                    sfxCollection.audioClipContainers[5] = CreateRandomAudioClipContainer(AudioClipID.VoiceJump, moddedCharacter.audioClips, VOICE_JUMP);
-                    sfxCollection.audioClipContainers[6] = CreateRandomAudioClipContainer(AudioClipID.VoiceTalk, moddedCharacter.audioClips, VOICE_TALK);
+                sfxCollection.audioClipContainers = new SfxCollection.RandomAudioClipContainer[7];
 
-                    self.sfxLibrary.sfxCollectionIDDictionary.Add(moddedCharacter.voiceId, sfxCollection);
-                }
+                sfxCollection.audioClipContainers[0] = CreateRandomAudioClipContainer(AudioClipID.VoiceBoostTrick, moddedCharacter.audioClips, VOICE_BOOST);
+                sfxCollection.audioClipContainers[1] = CreateRandomAudioClipContainer(AudioClipID.VoiceCombo, moddedCharacter.audioClips, VOICE_COMBO);
+                sfxCollection.audioClipContainers[2] = CreateRandomAudioClipContainer(AudioClipID.VoiceDie, moddedCharacter.audioClips, VOICE_DIE);
+                sfxCollection.audioClipContainers[3] = CreateRandomAudioClipContainer(AudioClipID.VoiceDieFall, moddedCharacter.audioClips, VOICE_DIEFALL);
+                sfxCollection.audioClipContainers[4] = CreateRandomAudioClipContainer(AudioClipID.VoiceGetHit, moddedCharacter.audioClips, VOICE_GETHIT);
+                sfxCollection.audioClipContainers[5] = CreateRandomAudioClipContainer(AudioClipID.VoiceJump, moddedCharacter.audioClips, VOICE_JUMP);
+                sfxCollection.audioClipContainers[6] = CreateRandomAudioClipContainer(AudioClipID.VoiceTalk, moddedCharacter.audioClips, VOICE_TALK);
+
+                self.sfxLibrary.sfxCollectionIDDictionary.Add(moddedCharacter.voiceId, sfxCollection);
             }
         }
 

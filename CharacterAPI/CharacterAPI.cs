@@ -71,9 +71,9 @@ namespace CharacterAPI
             if (!material) return;
             if (loader == null) return;
 
-            Material metalHeadMaterial = UnityEngine.Object.Instantiate(loader.GetCharacterMaterial(Characters.metalHead, 0));
+            Material metalHeadMaterial = loader.GetCharacterMaterial(Characters.metalHead, 0);
             material.shader = metalHeadMaterial.shader;
-            UnityEngine.Object.Destroy(metalHeadMaterial);
+            //UnityEngine.Object.Destroy(metalHeadMaterial);
         }
 
         public static void AttemtToFixShaderGraffiti(GraffitiLoader? loader, Material material)
@@ -81,10 +81,9 @@ namespace CharacterAPI
             if (!material) return;
             if (loader == null) return;
 
-            Material gameMaterial = UnityEngine.Object.Instantiate(loader.graffitiArtInfo.FindByCharacter(Characters.metalHead).graffitiMaterial);
+            Material gameMaterial = loader.graffitiArtInfo.FindByCharacter(Characters.metalHead).graffitiMaterial;
             material.shader = gameMaterial.shader;
-            UnityEngine.Object.Destroy(gameMaterial);
+            //UnityEngine.Object.Destroy(gameMaterial);
         }
-
     }
 }
