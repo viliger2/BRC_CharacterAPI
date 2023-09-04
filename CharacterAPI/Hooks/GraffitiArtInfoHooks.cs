@@ -8,6 +8,28 @@ namespace CharacterAPI.Hooks
         public static void InitHooks()
         {
             On.Reptile.GraffitiArtInfo.FindByCharacter += GraffitiArtInfo_FindByCharacter;
+            On.Reptile.GraffitiArtInfo.FindByTitle += GraffitiArtInfo_FindByTitle;
+        }
+
+        private static GraffitiArt GraffitiArtInfo_FindByTitle(On.Reptile.GraffitiArtInfo.orig_FindByTitle orig, GraffitiArtInfo self, string grafTitle)
+        {
+            GraffitiArt origResult = orig(self, grafTitle);
+
+            if(origResult == null && !string.IsNullOrEmpty(grafTitle))
+            {
+                var moddedCharacter = CharacterAPI.ModdedCharacters.Find(x => x.personalGrafitti != null && x.personalGrafitti.title.Equals(grafTitle));
+                if (moddedCharacter.personalGrafitti != null)
+                {
+                    CharacterAPI.AttemtToFixShaderGraffiti(GetGraffitiLoader(), moddedCharacter.personalGrafitti.graffitiMaterial);
+                    return moddedCharacter.personalGrafitti;
+                } else
+                {
+                    return orig(self, Reptile.GraffitiArt.Titles.playersGraf_S0);
+                }
+            } else
+            {
+                return origResult;
+            }
         }
 
         private static Reptile.GraffitiArt GraffitiArtInfo_FindByCharacter(On.Reptile.GraffitiArtInfo.orig_FindByCharacter orig, Reptile.GraffitiArtInfo self, Reptile.Characters character)

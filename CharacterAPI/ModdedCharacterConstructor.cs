@@ -1,5 +1,7 @@
 ﻿using Reptile;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace CharacterAPI
@@ -52,6 +54,9 @@ namespace CharacterAPI
 
         private PersonalGraffiti personalGraffiti;
 
+        // oh god, getting all graffiti names from GraffitiArt.Titles via reflection
+        private FieldInfo[] graffitiNamesFieldInfos = typeof(Reptile.GraffitiArt.Titles).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).Where(fi => fi.IsLiteral && !fi.IsInitOnly).ToArray();
+
         public void AddOutfit(Material material, string name = "")
         {
             if (outfits.Count > 3)
@@ -80,6 +85,12 @@ namespace CharacterAPI
             if (!texture)
             {
                 CharacterAPI.logger.LogWarning($"Personal graffiti {name} for character {this.characterName} has no texture, ignoring...");
+                return;
+            }
+
+            if (!CheckGraffitiName(name))
+            {
+                CharacterAPI.logger.LogWarning($"Personal graffiti {name}'s name for character {this.characterName} collides with existing game graffiti, ignoring...");
                 return;
             }
 
@@ -201,17 +212,9 @@ namespace CharacterAPI
 
             newCharacter.characterVisual = gameObject;
 
-
             CharacterAPI.ModdedCharacters.Add(newCharacter);
 
-            if (newCharacter.voiceId != SfxCollectionID.NONE)
-            {
-                CharacterAPI.logger.LogMessage($"Character {characterName} with Characters enum {newCharacter.characterEnum} and SfxCollectionID {newCharacter.voiceId} successfully added.");
-            }
-            else
-            {
-                CharacterAPI.logger.LogMessage($"Character {characterName} with enum {newCharacter.characterEnum} successfully added.");
-            }
+            CharacterAPI.logger.LogMessage($"Character {characterName} with enum {newCharacter.characterEnum}{GetLogStringWithSfxAndGraffiti(newCharacter.voiceId, newCharacter.personalGrafitti)} successfully added.");
 
             return true;
         }
@@ -233,5 +236,37 @@ namespace CharacterAPI
             }
         }
 
+        private string GetLogStringWithSfxAndGraffiti(SfxCollectionID voiceId, GraffitiArt personalGraffiti)
+        {
+            string result = "";
+
+            if (voiceId != SfxCollectionID.NONE)
+            {
+                result = string.Concat(result, $" and SfxCollectionID {voiceId}");
+            }
+
+            if(personalGraffiti != null)
+            {
+                result = string.Concat(result, $" and personal graffiti named \"{personalGraffiti.title}\"");
+            }
+
+            return result;
+        }
+
+        private bool CheckGraffitiName(string name)
+        {
+            bool available = true;
+
+            foreach(FieldInfo field in graffitiNamesFieldInfos)
+            {
+                string value = (string)field.GetValue(null);
+                if (value.Equals(name))
+                {
+                    return false;
+                }
+            }
+
+            return available;
+        }
     }
 }
