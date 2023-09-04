@@ -62,7 +62,7 @@ namespace CharacterAPI
 
             if (!material)
             {
-                CharacterAPI.logger.LogWarning($"on outfit creation material was empty, ignoging outfit {name}.");
+                CharacterAPI.logger.LogWarning($"Outfit material was empty for character {this.characterName}, ignoging outfit {name}.");
                 return;
             }
 

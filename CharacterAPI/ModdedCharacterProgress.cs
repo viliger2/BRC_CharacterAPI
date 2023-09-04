@@ -6,6 +6,7 @@ namespace CharacterAPI
 {
     public class ModdedCharacterProgress
     {
+
         public static Dictionary<Characters, CharacterProgress> moddedCharacterProgress = new Dictionary<Characters, Reptile.CharacterProgress>();
 
         public static CharacterProgress NewModdedCharacterProgress(Characters character, int outfit, MoveStyle moveStyle, int moveStyleSkin)

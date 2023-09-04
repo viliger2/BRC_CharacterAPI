@@ -315,9 +315,6 @@ namespace CharacterAPI.Hooks
             {
                 logger.LogError("Third CharacterSelect::Init hook failed.");
             }
-
-            //logger.LogMessage("CharacterSelect::Init is now: " + il.ToString());
         }
-
     }
 }

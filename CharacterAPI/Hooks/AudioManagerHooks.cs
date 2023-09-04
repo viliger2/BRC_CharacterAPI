@@ -27,7 +27,6 @@ namespace CharacterAPI.Hooks
                 c.Emit(OpCodes.Ldarg_2); // character
                 c.EmitDelegate<Func<Reptile.AudioManager, Characters, SfxCollectionID>>((am, c) =>
                 {
-                    CharacterAPI.logger.LogMessage($"AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority1: getting audio clip for character {c}");
                     if (Enum.IsDefined(typeof(Characters), c))
                     {
                         return am.characterToVoiceCollection[(int)c];
@@ -65,7 +64,6 @@ namespace CharacterAPI.Hooks
                 c.Emit(OpCodes.Ldarg_1); // character
                 c.EmitDelegate<Func<Reptile.AudioManager, Characters, SfxCollectionID>>((am, c) =>
                 {
-                    CharacterAPI.logger.LogMessage($"AudioManager_PlayVoice_Characters_AudioClipID1: getting audio clip for character {c}");
                     if (Enum.IsDefined(typeof(Characters), c))
                     {
                         return am.characterToVoiceCollection[(int)c];
@@ -93,7 +91,6 @@ namespace CharacterAPI.Hooks
 
         private static Reptile.SfxCollectionID AudioManager_GetCharacterVoiceSfxCollection(On.Reptile.AudioManager.orig_GetCharacterVoiceSfxCollection orig, Reptile.AudioManager self, Reptile.Characters character)
         {
-            CharacterAPI.logger.LogMessage($"request enum {character}");
             if (Enum.IsDefined(typeof(Characters), character))
             {
                 return orig(self, character);
