@@ -18,7 +18,7 @@ Please consider making a back-up of your save. I've made necessary precautions i
 * Maybe rewrite parts of the code, since by the end I got lazy and started using On hooks instead of IL
 
 ## Long term goals (aka never ever)
-* Custom models as outfits
+* ~~Custom models as outfits~~ Done
 * More than 4 outfits
 * Custom animations
 
