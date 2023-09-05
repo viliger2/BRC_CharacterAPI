@@ -1,4 +1,8 @@
-﻿using Reptile;
+﻿using CharacterAPI.Saving;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using Reptile;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Bindings;
@@ -16,10 +20,35 @@ namespace CharacterAPI.Hooks
         private const string VOICE_JUMP = "_jump";
         private const string VOICE_TALK = "_talk";
 
+        public static ModdedSaveManager moddedSaveManager;
+
         public static void InitHooks()
         {
             // Gonna assume this is essentially game's start up
             On.Reptile.Core.CreateSubSystems += Core_CreateSubSystems;
+            IL.Reptile.Core.CreateSubSystems += Core_CreateSubSystems1;
+        }
+
+        private static void Core_CreateSubSystems1(MonoMod.Cil.ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            if(c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdarg(out _),
+                x => x.MatchLdarg(out _),
+                x => x.MatchLdfld<Reptile.Core>("platform"),
+                x => x.MatchCallOrCallvirt<Reptile.APlatform>("get_Storage"),
+                x => x.MatchLdarg(out _)))
+            {
+                c.Index += 13;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Action<Reptile.Core>>((core) =>
+                {
+                    moddedSaveManager = new ModdedSaveManager(core.platform.storage, core.platform.errorHandler, core.saveManager);
+                });
+            } else
+            {
+                CharacterAPI.logger.LogError("Core::CreateSubSystems hook failed.");
+            }
         }
 
         private static void Core_CreateSubSystems(On.Reptile.Core.orig_CreateSubSystems orig, Reptile.Core self)

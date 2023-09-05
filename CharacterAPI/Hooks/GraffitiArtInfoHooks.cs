@@ -17,7 +17,7 @@ namespace CharacterAPI.Hooks
 
             if(origResult == null && !string.IsNullOrEmpty(grafTitle))
             {
-                var moddedCharacter = CharacterAPI.ModdedCharacters.Find(x => x.personalGrafitti != null && x.personalGrafitti.title.Equals(grafTitle));
+                var moddedCharacter = CharacterAPI.ModdedCharacters.Find(x => x.usePersonalGrafitti && x.personalGrafitti.title.Equals(grafTitle));
                 if (moddedCharacter.personalGrafitti != null)
                 {
                     CharacterAPI.AttemtToFixShaderGraffiti(GetGraffitiLoader(), moddedCharacter.personalGrafitti.graffitiMaterial);

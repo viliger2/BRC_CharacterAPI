@@ -1,6 +1,7 @@
 ﻿using MonoMod.Cil;
 using Reptile;
 using System;
+using static CharacterAPI.Saving.ModdedCharacterProgressData;
 
 namespace CharacterAPI.Hooks
 {
@@ -60,13 +61,19 @@ namespace CharacterAPI.Hooks
                 return orig(self, character);
             }
 
-            var progress = ModdedCharacterProgress.GetModdedCharacterProgress(character);
-            if (progress == null)
+            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+
+            CharacterAPI.logger.LogMessage($"moddedSaveManager: {CoreHooks.moddedSaveManager}");
+            CharacterAPI.logger.LogMessage($"currentSaveSlot: {CoreHooks.moddedSaveManager.CurrentSaveSlot}");
+            CharacterAPI.logger.LogMessage($"characterprogress: {CoreHooks.moddedSaveManager.CurrentSaveSlot.GetCharacterProgress(moddedCharacter.GetHashCode())}");
+
+            ModdedCharacterProgress1 progress = CoreHooks.moddedSaveManager.CurrentSaveSlot.GetCharacterProgress(moddedCharacter.GetHashCode());
+            if (progress.Equals(default(ModdedCharacterProgress1)))
             {
-                var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-                return ModdedCharacterProgress.NewModdedCharacterProgress(character, moddedCharacter.defaultOutfit, moddedCharacter.defaultMoveStyle, 0);
+                progress = CoreHooks.moddedSaveManager.CurrentSaveSlot.CreateNewModdedCharacterProgress(moddedCharacter.GetHashCode(), moddedCharacter.characterEnum, true, moddedCharacter.defaultOutfit, moddedCharacter.defaultMoveStyle, 0);
             }
-            return progress;
+
+            return progress.characterProgress;
         }
     }
 }

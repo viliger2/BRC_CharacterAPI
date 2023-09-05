@@ -38,7 +38,7 @@ namespace CharacterAPI
 
         public static CharacterProgress NewModdedCharacterProgress(Characters moddedCharacter)
         {
-            return NewModdedCharacterProgress(moddedCharacter, 0, 0, 0);
+            return NewModdedCharacterProgress(moddedCharacter, 0, MoveStyle.SKATEBOARD, 0);
         }
 
     }

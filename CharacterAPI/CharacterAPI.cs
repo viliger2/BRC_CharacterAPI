@@ -47,6 +47,7 @@ namespace CharacterAPI
             logger = Logger;
 
             AudioManagerHooks.InitHooks();
+            AUserHooks.InitHooks();
             CharacterConstructorHooks.InitHooks();
             CharacterSelectCharacterHooks.InitHooks();
             CharacterSelectHooks.InitHooks();
