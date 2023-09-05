@@ -50,7 +50,7 @@ namespace CharacterAPI.Hooks
             }
             else
             {
-                return orig(self, Characters.metalHead);
+                return orig(self, moddedCharacter.characterGraffitiBase);
             }
         }
 
