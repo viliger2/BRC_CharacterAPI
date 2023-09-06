@@ -31,9 +31,10 @@ namespace CharacterAPI.Hooks
                     {
                         return am.characterToVoiceCollection[(int)c];
                     }
-                    else
+
+                    CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+                    if (moddedCharacter != null)
                     {
-                        CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
                         if (moddedCharacter.voiceId != SfxCollectionID.NONE)
                         {
                             return moddedCharacter.voiceId;
@@ -42,7 +43,10 @@ namespace CharacterAPI.Hooks
                         {
                             return am.characterToVoiceCollection[(int)moddedCharacter.characterVoiceBase];
                         }
-
+                    } else
+                    {
+                        CharacterAPI.logger.LogWarning($"AudioManager::AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority failed to find voice for character {c}, replacing it with {Characters.metalHead}.");
+                        return am.characterToVoiceCollection[(int)Characters.metalHead];
                     }
                 });
             }
@@ -68,9 +72,10 @@ namespace CharacterAPI.Hooks
                     {
                         return am.characterToVoiceCollection[(int)c];
                     }
-                    else
+
+                    CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+                    if (moddedCharacter != null)
                     {
-                        CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
                         if (moddedCharacter.voiceId != SfxCollectionID.NONE)
                         {
                             return moddedCharacter.voiceId;
@@ -79,7 +84,10 @@ namespace CharacterAPI.Hooks
                         {
                             return am.characterToVoiceCollection[(int)moddedCharacter.characterVoiceBase];
                         }
-
+                    } else
+                    {
+                        CharacterAPI.logger.LogWarning($"AudioManager::PlayVoice_Characters_AudioClipID failed to find voice for character {c}, replacing it with {Characters.metalHead}.");
+                        return am.characterToVoiceCollection[(int)Characters.metalHead];
                     }
                 });
             }
@@ -95,15 +103,22 @@ namespace CharacterAPI.Hooks
             {
                 return orig(self, character);
             }
+
             var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-            if (moddedCharacter.voiceId != SfxCollectionID.NONE)
+            if (moddedCharacter != null)
             {
-                return moddedCharacter.voiceId;
+                if (moddedCharacter.voiceId != SfxCollectionID.NONE)
+                {
+                    return moddedCharacter.voiceId;
+                }
+                else
+                {
+                    return orig(self, moddedCharacter.characterVoiceBase);
+                }
             }
-            else
-            {
-                return orig(self, moddedCharacter.characterVoiceBase);
-            }
+
+            CharacterAPI.logger.LogWarning($"AudioManager::GetCharacterVoiceSfxCollection failed to find voice for character {character}, replacing it with {Characters.metalHead}.");
+            return orig(self, Characters.metalHead);
         }
     }
 }

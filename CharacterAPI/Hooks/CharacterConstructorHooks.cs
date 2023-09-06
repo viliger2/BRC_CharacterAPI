@@ -23,15 +23,21 @@ namespace CharacterAPI.Hooks
             }
 
             ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-            CharacterVisual characterVisual = UnityEngine.Object.Instantiate(moddedCharacter.characterVisual).AddComponent<CharacterVisual>();
-            SkinnedMeshRenderer meshRenderer = characterVisual.GetComponentInChildren<SkinnedMeshRenderer>();
-            if (meshRenderer)
+            if (moddedCharacter != null)
             {
-                CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, meshRenderer.material);
+                CharacterVisual characterVisual = UnityEngine.Object.Instantiate(moddedCharacter.characterVisual).AddComponent<CharacterVisual>();
+                SkinnedMeshRenderer meshRenderer = characterVisual.GetComponentInChildren<SkinnedMeshRenderer>();
+                if (meshRenderer)
+                {
+                    CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, meshRenderer.material);
+                }
+                characterVisual.Init(character, controller, IK, setGroundAngleLimit);
+                characterVisual.gameObject.SetActive(true);
+                return characterVisual;
             }
-            characterVisual.Init(character, controller, IK, setGroundAngleLimit);
-            characterVisual.gameObject.SetActive(true);
-            return characterVisual;
+
+            CharacterAPI.logger.LogWarning($"CharacterConstructor::CreateNewCharacterVisual failed to find modded character {character}, replacing it with {Characters.metalHead}.");
+            return orig(self, Characters.metalHead, controller, IK, setGroundAngleLimit);
         }
 
         private static Material CharacterConstructor_CreateCharacterMaterial(On.Reptile.CharacterConstructor.orig_CreateCharacterMaterial orig, CharacterConstructor self, Characters character, int outfit)
@@ -40,9 +46,10 @@ namespace CharacterAPI.Hooks
             {
                 return orig(self, character, outfit);
             }
-            else
+
+            ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            if (moddedCharacter != null)
             {
-                ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
                 Material material = moddedCharacter.loadedCharacterMaterials[outfit];
 
                 // should probably move this to initialization, but I am not sure how to load game's objects without Adressables
@@ -50,6 +57,9 @@ namespace CharacterAPI.Hooks
 
                 return material;
             }
+
+            CharacterAPI.logger.LogWarning($"CharacterConstructor::CreateCharacterMaterial failed to find modded character {character}, replacing it with {Characters.metalHead}.");
+            return orig(self, Characters.metalHead, outfit);
         }
     }
 }

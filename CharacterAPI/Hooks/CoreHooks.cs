@@ -29,6 +29,10 @@ namespace CharacterAPI.Hooks
             {
                 AddModdedCharacterSfx(self, moddedCharacter);
             }
+            if(CharacterAPI.PerformSaveCleanUp.Value)
+            {
+                ModdedCharacterProgress.PerformSaveCleanUp();
+            }
         }
 
         private static void AddModdedCharacterSfx(Core self, CharacterAPI.ModdedCharacter moddedCharacter)

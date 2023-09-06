@@ -35,11 +35,15 @@ namespace CharacterAPI.Hooks
                     {
                         return osm.player.CharacterConstructor.GetCharacterMaterials()[(int)character, skinIndex] != null;
                     }
-                    else
+
+                    var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                    if (moddedCharacter != null)
                     {
-                        var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
                         return moddedCharacter.loadedCharacterMaterials[skinIndex] != null;
                     }
+
+                    CharacterAPI.logger.LogWarning($"OutfitSwitchMenu::SkinButtonClicked failed to find modded character {character}, replacing it with {Characters.metalHead}.");
+                    return osm.player.CharacterConstructor.GetCharacterMaterials()[(int)Characters.metalHead, skinIndex] != null;
                 });
             }
             else
@@ -81,14 +85,20 @@ namespace CharacterAPI.Hooks
             }
 
             var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-            string name = moddedCharacter.outfitNames[outfitIndex];
+            if (moddedCharacter != null)
+            {
+                string name = moddedCharacter.outfitNames[outfitIndex];
 
-            OutfitUnlockable outfitUnlockable = ScriptableObject.CreateInstance<OutfitUnlockable>();
-            outfitUnlockable.outfitName = name != null ? name : moddedCharacter.Name;
-            outfitUnlockable.character = character;
-            outfitUnlockable.outfitIndex = outfitIndex;
-            outfitUnlockable.IsDefault = true;
-            return outfitUnlockable;
+                OutfitUnlockable outfitUnlockable = ScriptableObject.CreateInstance<OutfitUnlockable>();
+                outfitUnlockable.outfitName = name != null ? name : moddedCharacter.Name;
+                outfitUnlockable.character = character;
+                outfitUnlockable.outfitIndex = outfitIndex;
+                outfitUnlockable.IsDefault = true;
+                return outfitUnlockable;
+            }
+
+            CharacterAPI.logger.LogWarning($"OutfitSwitchMenu::SkinButtonClicked failed to find modded character {character}, replacing it with {Characters.metalHead}.");
+            return orig(outfitUnlockables, characterIndexMap, (int)Characters.metalHead, outfitIndex);
         }
     }
 }

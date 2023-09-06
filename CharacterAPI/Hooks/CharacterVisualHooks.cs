@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using CharacterAPI;
+using Reptile;
+using UnityEngine.TextCore.Text;
 
 namespace CharacterAPI.Hooks
 {
@@ -24,7 +26,13 @@ namespace CharacterAPI.Hooks
             }
 
             CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
-            return moddedCharacter.bounceHash;
+            if (moddedCharacter != null)
+            {
+                return moddedCharacter.bounceHash;
+            } 
+
+            CharacterAPI.logger.LogWarning($"CharacterVisual::GetCharacterBounceAnim failed to find modded character {c}, replacing it with {Characters.metalHead}.");
+            return orig(Characters.metalHead);
         }
 
         private static int CharacterVisual_GetCharacterFreestyleAnim(On.Reptile.CharacterVisual.orig_GetCharacterFreestyleAnim orig, Reptile.Characters c)
@@ -35,7 +43,13 @@ namespace CharacterAPI.Hooks
             }
 
             CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
-            return moddedCharacter.freestyleHash;
+            if (moddedCharacter != null)
+            {
+                return moddedCharacter.freestyleHash;
+            }
+
+            CharacterAPI.logger.LogWarning($"CharacterVisual::GetCharacterFreestyleAnim failed to find modded character {c}, replacing it with {Characters.metalHead}.");
+            return orig(c);
         }
     }
 }

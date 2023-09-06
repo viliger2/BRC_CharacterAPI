@@ -23,13 +23,19 @@ namespace CharacterAPI.Hooks
             } else
             {
                 ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-
-                // SetCharacterOutfitsUnlocked replacement
-                self.characterUnlockedOutfitCountLabel.text = "4/4";
-                // SetCharacterName replacement
-                self.characterNameLabel.text = moddedCharacter.Name;
-                // SetCharacterSelectUIMoveStyle replacement
-                self.SetCharacterSelectUIMoveStyle(moddedCharacter.defaultMoveStyle);
+                if (moddedCharacter != null)
+                {
+                    // SetCharacterOutfitsUnlocked replacement
+                    self.characterUnlockedOutfitCountLabel.text = "4/4";
+                    // SetCharacterName replacement
+                    self.characterNameLabel.text = moddedCharacter.Name;
+                    // SetCharacterSelectUIMoveStyle replacement
+                    self.SetCharacterSelectUIMoveStyle(moddedCharacter.defaultMoveStyle);
+                } else
+                {
+                    CharacterAPI.logger.LogWarning($"CharacterSelectUI::SetCharacterInformation failed to setup character information for modded character {character}, replacing it with {Characters.metalHead}.");
+                    orig(self, Characters.metalHead);
+                }
             }
         }
     }

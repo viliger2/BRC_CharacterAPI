@@ -1,6 +1,7 @@
 ﻿using MonoMod.Cil;
 using Reptile;
 using System;
+using static CharacterAPI.ModdedCharacterProgress;
 
 namespace CharacterAPI.Hooks
 {
@@ -60,13 +61,20 @@ namespace CharacterAPI.Hooks
                 return orig(self, character);
             }
 
-            var progress = ModdedCharacterProgress.GetModdedCharacterProgress(character);
-            if (progress == null)
+            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            if (moddedCharacter != null)
             {
-                var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-                return ModdedCharacterProgress.NewModdedCharacterProgress(character, moddedCharacter.defaultOutfit, moddedCharacter.defaultMoveStyle, 0);
+                ModdedCharacterProgressStruct? progress = GetCharacterProgress(Core.instance.saveManager.saveSlotHandler.currentSaveSlot.saveSlotId, moddedCharacter.GetHashCode());
+                if (progress == null)
+                {
+                    progress = CreateNewModdedCharacterProgress(Core.instance.saveManager.saveSlotHandler.currentSaveSlot.saveSlotId, moddedCharacter.GetHashCode(), character, true, moddedCharacter.defaultOutfit, moddedCharacter.defaultMoveStyle, 0);
+                }
+                return progress.characterProgress;
+            } else
+            {
+                CharacterAPI.logger.LogWarning($"SaveSlotData::GetCharacterProgress couldn't find modded character {character}, replacing with {Characters.metalHead}.");
+                return orig(self, Characters.metalHead);
             }
-            return progress;
         }
     }
 }

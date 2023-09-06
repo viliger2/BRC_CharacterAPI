@@ -27,6 +27,29 @@ namespace CharacterAPI.Hooks
             IL.Reptile.CharacterSelect.DefineLocations += CharacterSelect_DefineLocations;
             IL.Reptile.CharacterSelect.MoveSelection += CharacterSelect_MoveSelection;
             IL.Reptile.CharacterSelect.UpdateCharactersInCircle += CharacterSelect_UpdateCharactersInCircle;
+            On.Reptile.CharacterSelect.SetPlayerToCharacter += CharacterSelect_SetPlayerToCharacter;
+        }
+
+        private static void CharacterSelect_SetPlayerToCharacter(On.Reptile.CharacterSelect.orig_SetPlayerToCharacter orig, CharacterSelect self, int index)
+        {
+            orig(self, index);
+
+            // writing new current character to current modded character save slot
+            if (!Enum.IsDefined(typeof(Characters), self.player.character))
+            {
+                ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(self.player.character);
+                if (moddedCharacter != null)
+                {
+                    ModdedCharacterProgress.SetLastPlayedCharacter(Core.instance.saveManager.saveSlotHandler.currentSaveSlot.saveSlotId, moddedCharacter.GetHashCode());
+                }
+            }
+            else
+            {
+                ModdedCharacterProgress.SetLastPlayedCharacter(Core.instance.saveManager.saveSlotHandler.currentSaveSlot.saveSlotId, -1);
+            }
+
+            // SAVE_MODDED_CHARACTERS
+            ModdedCharacterProgress.SaveAsync();
         }
 
         private static void CharacterSelect_CreateCharacterSelectCharacter(On.Reptile.CharacterSelect.orig_CreateCharacterSelectCharacter orig, CharacterSelect self, Characters character, int numInCircle, CharacterSelectCharacter.CharSelectCharState startState)
