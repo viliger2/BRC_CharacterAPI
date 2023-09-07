@@ -1,8 +1,8 @@
 {
     "name": "CharacterAPI",
-    "version_number": "0.7.4",
+    "version_number": "0.7.6",
     "website_url": "https://github.com/viliger2/BRC_CharacterAPI",
-    "description": "API for loading custom characters. Now with custom sounds!",
+    "description": "API for loading custom characters. Now with saves!",
     "dependencies": [
 	    "BepInEx-BepInExPack-5.4.2100",
 		"viliger-HookGenPatcher-1.2.10"
