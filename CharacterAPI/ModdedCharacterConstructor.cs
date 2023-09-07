@@ -61,13 +61,13 @@ namespace CharacterAPI
         {
             if (outfits.Count > 3)
             {
-                CharacterAPI.logger.LogWarning($"Can't have more than 4 outfits on character {this.characterName}, ignoring outfit {name}.");
+                CharacterAPI.logger.LogWarning($"Can't have more than 4 outfits on character {this.characterName}. Skipping outfit {name}...");
                 return;
             }
 
             if (!material)
             {
-                CharacterAPI.logger.LogWarning($"Outfit material was empty for character {this.characterName}, ignoging outfit {name}.");
+                CharacterAPI.logger.LogWarning($"Outfit material was empty for character {this.characterName}. Skipping outfit {name}...");
                 return;
             }
 
@@ -78,19 +78,19 @@ namespace CharacterAPI
         {
             if (!material)
             {
-                CharacterAPI.logger.LogWarning($"Personal graffiti {name} for character {this.characterName} has no material, ignoring...");
+                CharacterAPI.logger.LogWarning($"Personal graffiti {name} for character {this.characterName} has no material. Skipping personal graffiti...");
                 return;
             }
 
             if (!texture)
             {
-                CharacterAPI.logger.LogWarning($"Personal graffiti {name} for character {this.characterName} has no texture, ignoring...");
+                CharacterAPI.logger.LogWarning($"Personal graffiti {name} for character {this.characterName} has no texture. Skipping personal graffiti...");
                 return;
             }
 
             if (!CheckGraffitiName(name))
             {
-                CharacterAPI.logger.LogWarning($"Personal graffiti {name}'s name for character {this.characterName} collides with existing game graffiti, ignoring...");
+                CharacterAPI.logger.LogWarning($"Personal graffiti {name}'s name for character {this.characterName} collides with existing game graffiti. Skipping personal graffiti...");
                 return;
             }
 
@@ -107,19 +107,24 @@ namespace CharacterAPI
         {
             if (string.IsNullOrEmpty(characterName))
             {
-                CharacterAPI.logger.LogWarning("Attempted to add a charcter without a name. Ignoring...");
+                CharacterAPI.logger.LogWarning("Attempted to add a charcter without a name. Skipping this character...");
                 return false;
             }
 
             if (!characterPrefab)
             {
-                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have a prefab. Ignoring...");
+                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have a prefab. Skipping this character...");
                 return false;
             }
 
             if (outfits.Count == 0)
             {
-                CharacterAPI.logger.LogWarning($"Character {characterName} needs to have at least one outfit. Ignoring...");
+                CharacterAPI.logger.LogWarning($"Character {characterName} needs to have at least one outfit. Skipping this character...");
+                return false;
+            }
+
+            if (!CheckForTransforms())
+            {
                 return false;
             }
 
@@ -267,6 +272,63 @@ namespace CharacterAPI
             }
 
             return available;
+        }
+
+        private bool CheckForTransforms()
+        {
+            bool transformsFound = true;
+
+            var animator = characterPrefab.GetComponentInChildren<Animator>();
+            if (!animator)
+            {
+                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have Animator component. Skipping this character...");
+                return false;
+            }
+
+            var root = animator.transform.Find("root");
+            if (!root) 
+            { 
+                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have \"root\" as animation bone base. Skipping this character...");
+                return false;
+            }
+
+            if(!animator.transform.Find("mesh"))
+            {
+                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have mesh named \"mesh\" at prefab's base. Skipping this character...");
+                return false;
+            }
+
+            transformsFound = CheckForSpecificTransformInRoot(root, "head", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "jetpack", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "footr", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "footl", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "leg2r", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "leg2l", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "handr", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root, "handl", transformsFound);
+
+            transformsFound = CheckForSpecificTransformInRoot(root.parent, "handlIK", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root.parent, "handrIK", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root.parent, "bmxFrame", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root.parent, "phoneDirectionRoot", transformsFound);
+            transformsFound = CheckForSpecificTransformInRoot(root.parent, "skateboard", transformsFound);
+
+            return transformsFound;
+        }
+
+        private bool CheckForSpecificTransformInRoot(Transform transform, string bone, bool bonesFound)
+        {
+            bool boneExists = transform.Find(bone);
+            if (!boneExists)
+            {
+                boneExists = transform.FindRecursive(bone);
+            }
+            if(!boneExists)
+            {
+                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have transform \"{bone}\". Skipping this character...");
+            }
+
+            return boneExists && bonesFound;
         }
     }
 }
