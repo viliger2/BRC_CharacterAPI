@@ -29,25 +29,28 @@ namespace CharacterAPI.Hooks
                 c.Remove();
                 c.EmitDelegate<Action<Reptile.Player, Reptile.Characters, int>>((player, character, outfit) =>
                 {
-                    int saveSlotId = Core.Instance.saveManager.CurrentSaveSlot.saveSlotId;
-                    var slot = ModdedCharacterProgress.GetModdedSaveSlot(saveSlotId);
-                    if (slot != null)
+                    if (!player.isAI)
                     {
-                        var moddedCharacter = CharacterAPI.GetModdedCharacter(slot.lastPlayedCharacter);
-                        if (moddedCharacter != null)
+                        int saveSlotId = Core.Instance.saveManager.CurrentSaveSlot.saveSlotId;
+                        var slot = ModdedCharacterProgress.GetModdedSaveSlot(saveSlotId);
+                        if (slot != null)
                         {
-                            CharacterAPI.logger.LogMessage($"Modded character with hash {slot.lastPlayedCharacter} is {moddedCharacter.Name}, loading as modded chacater.");
-                            var moddedCharacteProgress = slot.GetModdedCharacterProgress(slot.lastPlayedCharacter);
-                            player.SetCharacter(moddedCharacter.characterEnum, moddedCharacteProgress.characterProgress.outfit);
-                        } else
-                        {
-                            CharacterAPI.logger.LogMessage($"Modded character with hash {slot.lastPlayedCharacter} could not be found, loading as {character}.");
-                            player.SetCharacter(character, outfit);
+                            var moddedCharacter = CharacterAPI.GetModdedCharacter(slot.lastPlayedCharacter);
+                            if (moddedCharacter != null)
+                            {
+                                CharacterAPI.logger.LogMessage($"Modded character with hash {slot.lastPlayedCharacter} is {moddedCharacter.Name}, loading as modded chacater.");
+                                var moddedCharacteProgress = slot.GetModdedCharacterProgress(slot.lastPlayedCharacter);
+                                player.SetCharacter(moddedCharacter.characterEnum, moddedCharacteProgress.characterProgress.outfit);
+                                return;
+                            }
+                            else
+                            {
+                                CharacterAPI.logger.LogMessage($"Modded character with hash {slot.lastPlayedCharacter} could not be found, loading as {character}.");
+                            }
                         }
-                    } else
-                    {
-                        player.SetCharacter(character, outfit);
                     }
+
+                    player.SetCharacter(character, outfit);
                 });
             } else
             {
