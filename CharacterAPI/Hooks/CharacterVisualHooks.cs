@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using CharacterAPI;
-using Reptile;
-using UnityEngine.TextCore.Text;
+﻿using Reptile;
+using System;
 
 namespace CharacterAPI.Hooks
 {
@@ -25,11 +18,11 @@ namespace CharacterAPI.Hooks
                 return orig(c);
             }
 
-            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+            ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(c);
             if (moddedCharacter != null)
             {
                 return moddedCharacter.bounceHash;
-            } 
+            }
 
             CharacterAPI.logger.LogWarning($"CharacterVisual::GetCharacterBounceAnim failed to find modded character {c}, replacing it with {Characters.metalHead}.");
             return orig(Characters.metalHead);
@@ -37,12 +30,12 @@ namespace CharacterAPI.Hooks
 
         private static int CharacterVisual_GetCharacterFreestyleAnim(On.Reptile.CharacterVisual.orig_GetCharacterFreestyleAnim orig, Reptile.Characters c)
         {
-            if(Enum.IsDefined(typeof(Reptile.Characters), c))
+            if (Enum.IsDefined(typeof(Reptile.Characters), c))
             {
                 return orig(c);
             }
 
-            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+            ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(c);
             if (moddedCharacter != null)
             {
                 return moddedCharacter.freestyleHash;

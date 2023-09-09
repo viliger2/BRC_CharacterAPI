@@ -7,66 +7,14 @@ using UnityEngine;
 
 namespace CharacterAPI
 {
-    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.7.1")]
+    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.8.0")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;
 
         public static string SavePath;
 
-        public const int CHARACTER_STARTING_VALUE = (int)Characters.MAX + 1;
-        public const int VOICE_STARTING_VALUE = (int)SfxCollectionID.MAX + 1;
-
-        internal static List<ModdedCharacter> ModdedCharacters = new List<ModdedCharacter>();
-
         public static ConfigEntry<bool> PerformSaveCleanUp;
-
-        public class ModdedCharacter
-        {
-            public string Name;
-            public string[] outfitNames;
-            public Material[] loadedCharacterMaterials;
-            public GameObject loadedCharacterFbxAssets;
-            public GameObject characterVisual;
-            public int defaultOutfit;
-            public MoveStyle defaultMoveStyle;
-            public Characters characterVoiceBase;
-            public bool usePersonalGrafitti;
-            public Reptile.GraffitiArt? personalGrafitti;
-            public Characters characterGraffitiBase;
-            public int freestyleHash;
-            public int bounceHash;
-            public Characters characterEnum;
-            public SfxCollectionID voiceId;
-            public List<AudioClip> audioClips = new List<AudioClip>();
-
-            private int? Hash = null;
-
-            public override int GetHashCode()
-            {
-                if (Hash == null)
-                {
-                    unchecked // Overflow is fine, just wrap
-                    {
-                        int hash = (int)2166136261;
-                        // Suitable nullity checks etc, of course :)
-                        hash = (hash * 16777619) + Name.GetHashCode();
-                        foreach (string outfitName in outfitNames)
-                        {
-                            hash = (hash * 16777619) + outfitName.GetHashCode();
-                        }
-                        //hash = (hash * 16777619) + outfitNames.GetHashCode();
-                        hash = (hash * 16777619) + usePersonalGrafitti.GetHashCode();
-                        hash = (hash * 16777619) + defaultMoveStyle.GetHashCode();
-                        hash = (hash * 16777619) + defaultOutfit.GetHashCode();
-                        Hash = hash;
-                    }
-                }
-
-                return (int)Hash;
-            }
-
-        }
 
         public void Awake()
         {
@@ -92,16 +40,6 @@ namespace CharacterAPI
             ModdedCharacterProgress.LoadAsync();
 
             //ModdedCharacterLoader.LoadAssetBundle(Info);
-        }
-
-        public static ModdedCharacter GetModdedCharacter(Characters character)
-        {
-            return ModdedCharacters.Find(x => x.characterEnum == character);
-        }
-
-        public static ModdedCharacter GetModdedCharacter(int hash)
-        {
-            return ModdedCharacters.Find(x => x.GetHashCode() == hash);
         }
 
         public static void AttemptToFixShaderCharacter(CharacterLoader? loader, Material material)

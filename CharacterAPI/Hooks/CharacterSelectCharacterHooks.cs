@@ -1,11 +1,5 @@
 ﻿using Reptile;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
 using static CharacterAPI.CharacterAPI;
 
 namespace CharacterAPI.Hooks
@@ -22,12 +16,12 @@ namespace CharacterAPI.Hooks
             orig(self, SetCharacterSelect, setCharacter, collider, talkTrigger, centerPosition, swapCharacterSequence);
             if (!Enum.IsDefined(typeof(Characters), setCharacter))
             {
-                ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(setCharacter);
+                ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(setCharacter);
                 if (moddedCharacter != null)
                 {
                     self.freeStyleHash = moddedCharacter.freestyleHash;
                 }
-            }       
+            }
         }
     }
 }

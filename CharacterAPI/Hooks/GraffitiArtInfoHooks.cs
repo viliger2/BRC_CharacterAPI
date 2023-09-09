@@ -17,7 +17,7 @@ namespace CharacterAPI.Hooks
 
             if (origResult == null && !string.IsNullOrEmpty(grafTitle))
             {
-                var moddedCharacter = CharacterAPI.ModdedCharacters.Find(x => x.personalGrafitti != null && x.personalGrafitti.title.Equals(grafTitle));
+                var moddedCharacter = ModdedCharacter.ModdedCharacters.Find(x => x.personalGrafitti != null && x.personalGrafitti.title.Equals(grafTitle));
                 if (moddedCharacter != null)
                 {
                     if (moddedCharacter.personalGrafitti != null)
@@ -49,7 +49,7 @@ namespace CharacterAPI.Hooks
                 return orig(self, character);
             }
 
-            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            var moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
             if (moddedCharacter != null)
             {
                 if (moddedCharacter.usePersonalGrafitti)

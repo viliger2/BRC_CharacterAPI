@@ -1,9 +1,5 @@
 ﻿using Reptile;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static CharacterAPI.CharacterAPI;
 
 namespace CharacterAPI.Hooks
@@ -20,9 +16,10 @@ namespace CharacterAPI.Hooks
             if (Enum.IsDefined(typeof(Characters), character))
             {
                 orig(self, character);
-            } else
+            }
+            else
             {
-                ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
                 if (moddedCharacter != null)
                 {
                     // SetCharacterOutfitsUnlocked replacement
@@ -35,11 +32,13 @@ namespace CharacterAPI.Hooks
                     if (progress != null)
                     {
                         self.SetCharacterSelectUIMoveStyle(progress.characterProgress.moveStyle);
-                    } else
+                    }
+                    else
                     {
                         self.SetCharacterSelectUIMoveStyle(moddedCharacter.defaultMoveStyle);
                     }
-                } else
+                }
+                else
                 {
                     CharacterAPI.logger.LogWarning($"CharacterSelectUI::SetCharacterInformation failed to setup character information for modded character {character}, replacing it with {Characters.metalHead}.");
                     orig(self, Characters.metalHead);

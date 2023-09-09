@@ -106,7 +106,7 @@ namespace CharacterAPI
             {
                 foreach(var characterProgress in saveSlot.Value.moddedCharacterProgress)
                 {
-                    var moddedCharacter = CharacterAPI.GetModdedCharacter(characterProgress.characterHash);
+                    var moddedCharacter = ModdedCharacter.GetModdedCharacter(characterProgress.characterHash);
                     if (moddedCharacter == null)
                     {
                         saveSlot.Value.moddedCharacterProgress.Remove(characterProgress);
@@ -125,7 +125,7 @@ namespace CharacterAPI
             {
                 foreach (var characterProgress in saveSlot.Value.moddedCharacterProgress)
                 {
-                    var moddedCharacter = CharacterAPI.GetModdedCharacter(characterProgress.characterHash);
+                    var moddedCharacter = ModdedCharacter.GetModdedCharacter(characterProgress.characterHash);
                     if (moddedCharacter == null)
                     {
                         characterProgress.characterProgress.character = Characters.NONE;

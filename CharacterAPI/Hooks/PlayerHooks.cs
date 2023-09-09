@@ -35,7 +35,7 @@ namespace CharacterAPI.Hooks
                         var slot = ModdedCharacterProgress.GetModdedSaveSlot(saveSlotId);
                         if (slot != null)
                         {
-                            var moddedCharacter = CharacterAPI.GetModdedCharacter(slot.lastPlayedCharacter);
+                            var moddedCharacter = ModdedCharacter.GetModdedCharacter(slot.lastPlayedCharacter);
                             if (moddedCharacter != null)
                             {
                                 CharacterAPI.logger.LogMessage($"Modded character with hash {slot.lastPlayedCharacter} is {moddedCharacter.Name}, loading as modded chacater.");
@@ -90,7 +90,7 @@ namespace CharacterAPI.Hooks
                     }
                     else
                     {
-                        CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(p.character);
+                        ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(p.character);
                         if (moddedCharacter != null)
                         {
                             if (moddedCharacter.voiceId != SfxCollectionID.NONE)

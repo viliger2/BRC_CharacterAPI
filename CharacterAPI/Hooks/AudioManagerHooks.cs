@@ -11,11 +11,11 @@ namespace CharacterAPI.Hooks
         public static void InitHooks()
         {
             On.Reptile.AudioManager.GetCharacterVoiceSfxCollection += AudioManager_GetCharacterVoiceSfxCollection;
-            IL.Reptile.AudioManager.PlayVoice_Characters_AudioClipID += AudioManager_PlayVoice_Characters_AudioClipID1;
-            IL.Reptile.AudioManager.PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority += AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority1;
+            IL.Reptile.AudioManager.PlayVoice_Characters_AudioClipID += AudioManager_PlayVoice_Characters_AudioClipID;
+            IL.Reptile.AudioManager.PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority += AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority;
         }
 
-        private static void AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority1(ILContext il)
+        private static void AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority(ILContext il)
         {
             ILCursor c = new ILCursor(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -32,7 +32,7 @@ namespace CharacterAPI.Hooks
                         return am.characterToVoiceCollection[(int)c];
                     }
 
-                    CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+                    ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(c);
                     if (moddedCharacter != null)
                     {
                         if (moddedCharacter.voiceId != SfxCollectionID.NONE)
@@ -43,7 +43,8 @@ namespace CharacterAPI.Hooks
                         {
                             return am.characterToVoiceCollection[(int)moddedCharacter.characterVoiceBase];
                         }
-                    } else
+                    }
+                    else
                     {
                         CharacterAPI.logger.LogWarning($"AudioManager::AudioManager_PlayVoice_refVoicePriority_Characters_AudioClipID_AudioSource_VoicePriority failed to find voice for character {c}, replacing it with {Characters.metalHead}.");
                         return am.characterToVoiceCollection[(int)Characters.metalHead];
@@ -56,7 +57,7 @@ namespace CharacterAPI.Hooks
             }
         }
 
-        private static void AudioManager_PlayVoice_Characters_AudioClipID1(MonoMod.Cil.ILContext il)
+        private static void AudioManager_PlayVoice_Characters_AudioClipID(MonoMod.Cil.ILContext il)
         {
             ILCursor c = new ILCursor(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -73,7 +74,7 @@ namespace CharacterAPI.Hooks
                         return am.characterToVoiceCollection[(int)c];
                     }
 
-                    CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(c);
+                    ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(c);
                     if (moddedCharacter != null)
                     {
                         if (moddedCharacter.voiceId != SfxCollectionID.NONE)
@@ -84,7 +85,8 @@ namespace CharacterAPI.Hooks
                         {
                             return am.characterToVoiceCollection[(int)moddedCharacter.characterVoiceBase];
                         }
-                    } else
+                    }
+                    else
                     {
                         CharacterAPI.logger.LogWarning($"AudioManager::PlayVoice_Characters_AudioClipID failed to find voice for character {c}, replacing it with {Characters.metalHead}.");
                         return am.characterToVoiceCollection[(int)Characters.metalHead];
@@ -104,7 +106,7 @@ namespace CharacterAPI.Hooks
                 return orig(self, character);
             }
 
-            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            var moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
             if (moddedCharacter != null)
             {
                 if (moddedCharacter.voiceId != SfxCollectionID.NONE)

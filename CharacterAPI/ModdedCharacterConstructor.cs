@@ -8,6 +8,9 @@ namespace CharacterAPI
 {
     public class ModdedCharacterConstructor
     {
+        public const int CHARACTER_STARTING_VALUE = (int)Characters.MAX + 1;
+        public const int VOICE_STARTING_VALUE = (int)SfxCollectionID.MAX + 1;
+
         private struct Outfit
         {
             public string name;
@@ -47,6 +50,8 @@ namespace CharacterAPI
         public FreestyleType freestyleType = FreestyleType.freestyle1;
 
         public BounceType bounceType = BounceType.bounce;
+
+        public bool canBlink;
 
         public List<AudioClip> audioClips = new List<AudioClip>();
 
@@ -128,11 +133,11 @@ namespace CharacterAPI
                 return false;
             }
 
-            CharacterAPI.ModdedCharacter newCharacter = new CharacterAPI.ModdedCharacter();
+            ModdedCharacter newCharacter = new ModdedCharacter();
 
             newCharacter.Name = characterName;
 
-            newCharacter.characterEnum = (Characters)(CharacterAPI.CHARACTER_STARTING_VALUE + CharacterAPI.ModdedCharacters.Count);
+            newCharacter.characterEnum = (Characters)(CHARACTER_STARTING_VALUE + ModdedCharacter.ModdedCharacters.Count);
 
             newCharacter.outfitNames = new string[4];
             newCharacter.loadedCharacterMaterials = new Material[4];
@@ -144,6 +149,22 @@ namespace CharacterAPI
             }
 
             newCharacter.loadedCharacterFbxAssets = characterPrefab;
+
+            var meshRenderer = characterPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
+            if(meshRenderer)
+            {
+                var mesh = meshRenderer.sharedMesh;
+                if (mesh)
+                {
+                    if (mesh.blendShapeCount < 2 && canBlink)
+                    {
+                        CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have nessesary shape keys\\blend shapes to blink, yet is marked as capable of blinking. Setting canBlink to false.");
+                        canBlink = false;
+                    }
+                }
+            }
+
+            newCharacter.canBlink = canBlink;
 
             newCharacter.defaultOutfit = Mathf.Clamp(defaultOutfit, 0, 3);
             newCharacter.defaultMoveStyle = defaultMoveStyle;
@@ -184,7 +205,7 @@ namespace CharacterAPI
 
             if (audioClips.Count > 0)
             {
-                newCharacter.voiceId = (SfxCollectionID)(CharacterAPI.VOICE_STARTING_VALUE + CharacterAPI.ModdedCharacters.Count);
+                newCharacter.voiceId = (SfxCollectionID)(VOICE_STARTING_VALUE + ModdedCharacter.ModdedCharacters.Count);
                 newCharacter.audioClips = audioClips;
             }
             else
@@ -217,7 +238,7 @@ namespace CharacterAPI
 
             newCharacter.characterVisual = gameObject;
 
-            CharacterAPI.ModdedCharacters.Add(newCharacter);
+            ModdedCharacter.ModdedCharacters.Add(newCharacter);
 
             CharacterAPI.logger.LogMessage($"Character {characterName} with enum {newCharacter.characterEnum}{GetLogStringWithSfxAndGraffiti(newCharacter.voiceId, newCharacter.personalGrafitti)} successfully added.");
 

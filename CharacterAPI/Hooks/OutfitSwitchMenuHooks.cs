@@ -11,8 +11,49 @@ namespace CharacterAPI.Hooks
         public static void InitHooks()
         {
             On.Reptile.OutfitSwitchMenu.GetOutfitUnlockable += OutfitSwitchMenu_GetOutfitUnlockable;
-            On.Reptile.OutfitSwitchMenu.SkinButtonSelected += OutfitSwitchMenu_SkinButtonSelected;
             IL.Reptile.OutfitSwitchMenu.SkinButtonClicked += OutfitSwitchMenu_SkinButtonClicked;
+            IL.Reptile.OutfitSwitchMenu.SkinButtonSelected += OutfitSwitchMenu_SkinButtonSelected;
+        }
+
+        private static void OutfitSwitchMenu_SkinButtonSelected(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            if(c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdarg(out _),
+                x => x.MatchLdfld<Reptile.OutfitSwitchMenu>("player"),
+                x => x.MatchCallOrCallvirt<Reptile.Player>("get_CharacterConstructor")))
+            {
+                c.Index++;
+                c.RemoveRange(6);
+                c.Emit(OpCodes.Ldloc_0); // (int)character
+                c.Emit(OpCodes.Ldarg_2); // skinIndex
+                c.EmitDelegate<Func<Reptile.OutfitSwitchMenu, int, int, Material>>((outfitSwitchMenu, character, skinIndex) =>
+                {
+                    if(Enum.IsDefined(typeof(Characters), (Characters)character))
+                    {
+                        return outfitSwitchMenu.player.CharacterConstructor.GetCharacterMaterials()[character, skinIndex];
+                    } else
+                    {
+                        var moddedCharacter = ModdedCharacter.GetModdedCharacter((Characters)character);
+                        if (moddedCharacter != null)
+                        {
+                            Material material = moddedCharacter.loadedCharacterMaterials[skinIndex];
+                            if(material)
+                            {
+                                CharacterAPI.AttemptToFixShaderCharacter(outfitSwitchMenu.player.characterConstructor.characterLoader, material);
+                            }
+                            return material;
+                        } else
+                        {
+                            CharacterAPI.logger.LogWarning($"OutfitSwitchMenu::SkinButtonSelected failed to find modded character {character}, replacing it with {Characters.metalHead}.");
+                            return outfitSwitchMenu.player.CharacterConstructor.GetCharacterMaterials()[(int)Characters.metalHead, skinIndex];
+                        }
+                    }
+                });
+            } else
+            {
+                CharacterAPI.logger.LogError("OutfitSwitchMenu::SkinButtonSelected hook failed.");
+            }
         }
 
         private static void OutfitSwitchMenu_SkinButtonClicked(MonoMod.Cil.ILContext il)
@@ -36,7 +77,7 @@ namespace CharacterAPI.Hooks
                         return osm.player.CharacterConstructor.GetCharacterMaterials()[(int)character, skinIndex] != null;
                     }
 
-                    var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+                    var moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
                     if (moddedCharacter != null)
                     {
                         return moddedCharacter.loadedCharacterMaterials[skinIndex] != null;
@@ -52,30 +93,6 @@ namespace CharacterAPI.Hooks
             }
         }
 
-        // TODO: replace with IL hook since I just rewrote whole function except where you get the material
-        private static void OutfitSwitchMenu_SkinButtonSelected(On.Reptile.OutfitSwitchMenu.orig_SkinButtonSelected orig, OutfitSwitchMenu self, MenuTimelineButton clickedButton, int skinIndex)
-        {
-            Characters character = self.player.character;
-            if (Enum.IsDefined(typeof(Characters), character))
-            {
-                orig(self, clickedButton, skinIndex);
-            }
-            else
-            {
-                if (!self.IsTransitioning && self.buttonClicked == null)
-                {
-                    var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
-                    Material material = moddedCharacter.loadedCharacterMaterials[skinIndex];
-
-                    if (material)
-                    {
-                        CharacterAPI.AttemptToFixShaderCharacter(self.player.characterConstructor.characterLoader, material);
-                        self.previewCharacterVisual.mainRenderer.material = material;
-                    }
-                }
-            }
-        }
-
         private static Reptile.OutfitUnlockable OutfitSwitchMenu_GetOutfitUnlockable(On.Reptile.OutfitSwitchMenu.orig_GetOutfitUnlockable orig, Reptile.OutfitUnlockable[] outfitUnlockables, int[] characterIndexMap, int characterIndex, int outfitIndex)
         {
             Characters character = (Characters)characterIndex;
@@ -84,7 +101,7 @@ namespace CharacterAPI.Hooks
                 return orig(outfitUnlockables, characterIndexMap, characterIndex, outfitIndex);
             }
 
-            var moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            var moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
             if (moddedCharacter != null)
             {
                 string name = moddedCharacter.outfitNames[outfitIndex];

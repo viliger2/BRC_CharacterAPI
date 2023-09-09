@@ -61,7 +61,7 @@ namespace CharacterAPI.Hooks
                 return orig(self, character);
             }
 
-            CharacterAPI.ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
             if (moddedCharacter != null)
             {
                 ModdedCharacterProgressStruct? progress = GetCharacterProgress(Core.instance.saveManager.saveSlotHandler.currentSaveSlot.saveSlotId, moddedCharacter.GetHashCode());

@@ -1,7 +1,6 @@
 ﻿using Reptile;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Bindings;
 
 namespace CharacterAPI.Hooks
 {
@@ -25,11 +24,11 @@ namespace CharacterAPI.Hooks
         private static void Core_CreateSubSystems(On.Reptile.Core.orig_CreateSubSystems orig, Reptile.Core self)
         {
             orig(self);
-            foreach (CharacterAPI.ModdedCharacter moddedCharacter in CharacterAPI.ModdedCharacters)
+            foreach (ModdedCharacter moddedCharacter in ModdedCharacter.ModdedCharacters)
             {
                 AddModdedCharacterSfx(self, moddedCharacter);
             }
-            if(CharacterAPI.PerformSaveCleanUp.Value)
+            if (CharacterAPI.PerformSaveCleanUp.Value)
             {
                 ModdedCharacterProgress.PerformSaveCleanUp();
             }
@@ -37,7 +36,7 @@ namespace CharacterAPI.Hooks
             //ModdedCharacterProgress.PerformSaveValidation();
         }
 
-        private static void AddModdedCharacterSfx(Core self, CharacterAPI.ModdedCharacter moddedCharacter)
+        private static void AddModdedCharacterSfx(Core self, ModdedCharacter moddedCharacter)
         {
             if (moddedCharacter.voiceId != Reptile.SfxCollectionID.NONE)
             {

@@ -2,18 +2,18 @@
 using MonoMod.Cil;
 using Reptile;
 using System;
-using UnityEngine.Playables;
-using UnityEngine;
-using static CharacterAPI.CharacterAPI;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Playables;
+using static CharacterAPI.CharacterAPI;
 
 namespace CharacterAPI.Hooks
 {
     public class CharacterSelectHooks
     {
-        public static List<SelectableCharacterWithMods> selectableCharactesWithMods = new List<SelectableCharacterWithMods>();
+        private static List<SelectableCharacterWithMods> selectableCharactesWithMods = new List<SelectableCharacterWithMods>();
 
-        public struct SelectableCharacterWithMods
+        private struct SelectableCharacterWithMods
         {
             public bool IsModdedCharacter;
             public Characters characterEnum;
@@ -37,8 +37,8 @@ namespace CharacterAPI.Hooks
             // writing new current character to current modded character save slot
             if (!Enum.IsDefined(typeof(Characters), self.player.character))
             {
-                ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(self.player.character);
-                if (moddedCharacter != null)
+                ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(self.player.character);
+                if (moddedCharacter != null)    
                 {
                     ModdedCharacterProgress.SetLastPlayedCharacter(Core.instance.saveManager.saveSlotHandler.currentSaveSlot.saveSlotId, moddedCharacter.GetHashCode());
                 }
@@ -83,7 +83,7 @@ namespace CharacterAPI.Hooks
             {
                 selectableCharactesWithMods.Add(new SelectableCharacterWithMods { characterEnum = character, IsModdedCharacter = false });
             }
-            foreach (CharacterAPI.ModdedCharacter moddedCharacter in CharacterAPI.ModdedCharacters)
+            foreach (ModdedCharacter moddedCharacter in ModdedCharacter.ModdedCharacters)
             {
                 if (self.player.character != moddedCharacter.characterEnum)
                 {
@@ -266,8 +266,6 @@ namespace CharacterAPI.Hooks
             {
                 logger.LogError("CharacterSelect::DefineLocations hook failed.");
             }
-
-            //logger.LogMessage("CharacterSelect::DefineLocations is now: " + il.ToString());
         }
 
         private static void CharacterSelect_Init(ILContext il)

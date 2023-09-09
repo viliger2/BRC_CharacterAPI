@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Reptile;
+﻿using Reptile;
 using System;
 using UnityEngine;
 using static CharacterAPI.CharacterAPI;
@@ -19,10 +17,10 @@ namespace CharacterAPI.Hooks
         {
             if (Enum.IsDefined(typeof(Characters), character))
             {
-                return orig(self, character,controller, IK, setGroundAngleLimit);
+                return orig(self, character, controller, IK, setGroundAngleLimit);
             }
 
-            ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
             if (moddedCharacter != null)
             {
                 CharacterVisual characterVisual = UnityEngine.Object.Instantiate(moddedCharacter.characterVisual).AddComponent<CharacterVisual>();
@@ -33,6 +31,7 @@ namespace CharacterAPI.Hooks
                 }
                 characterVisual.Init(character, controller, IK, setGroundAngleLimit);
                 characterVisual.gameObject.SetActive(true);
+                characterVisual.canBlink = moddedCharacter.canBlink;
                 return characterVisual;
             }
 
@@ -40,6 +39,7 @@ namespace CharacterAPI.Hooks
             return orig(self, Characters.metalHead, controller, IK, setGroundAngleLimit);
         }
 
+        // TODO: maybe remove this and make CharacterLoader.GetCharacterMaterial hook instead
         private static Material CharacterConstructor_CreateCharacterMaterial(On.Reptile.CharacterConstructor.orig_CreateCharacterMaterial orig, CharacterConstructor self, Characters character, int outfit)
         {
             if (Enum.IsDefined(typeof(Characters), character))
@@ -47,7 +47,7 @@ namespace CharacterAPI.Hooks
                 return orig(self, character, outfit);
             }
 
-            ModdedCharacter moddedCharacter = CharacterAPI.GetModdedCharacter(character);
+            ModdedCharacter moddedCharacter = ModdedCharacter.GetModdedCharacter(character);
             if (moddedCharacter != null)
             {
                 Material material = moddedCharacter.loadedCharacterMaterials[outfit];
