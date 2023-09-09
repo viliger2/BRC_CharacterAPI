@@ -40,35 +40,36 @@ namespace CharacterAPI
             public SfxCollectionID voiceId;
             public List<AudioClip> audioClips = new List<AudioClip>();
 
+            private int? Hash = null;
+
             public override int GetHashCode()
             {
-                unchecked // Overflow is fine, just wrap
+                if (Hash == null)
                 {
-                    int hash = (int)2166136261;
-                    // Suitable nullity checks etc, of course :)
-                    hash = (hash * 16777619) + Name.GetHashCode();
-                    foreach(string outfitName in outfitNames)
+                    unchecked // Overflow is fine, just wrap
                     {
-                        hash = (hash * 16777619) + outfitName.GetHashCode();
+                        int hash = (int)2166136261;
+                        // Suitable nullity checks etc, of course :)
+                        hash = (hash * 16777619) + Name.GetHashCode();
+                        foreach (string outfitName in outfitNames)
+                        {
+                            hash = (hash * 16777619) + outfitName.GetHashCode();
+                        }
+                        //hash = (hash * 16777619) + outfitNames.GetHashCode();
+                        hash = (hash * 16777619) + usePersonalGrafitti.GetHashCode();
+                        hash = (hash * 16777619) + defaultMoveStyle.GetHashCode();
+                        hash = (hash * 16777619) + defaultOutfit.GetHashCode();
+                        Hash = hash;
                     }
-                    //hash = (hash * 16777619) + outfitNames.GetHashCode();
-                    hash = (hash * 16777619) + usePersonalGrafitti.GetHashCode();
-                    hash = (hash * 16777619) + defaultMoveStyle.GetHashCode();
-                    hash = (hash * 16777619) + defaultOutfit.GetHashCode();
-                    return hash;
                 }
+
+                return (int)Hash;
             }
 
         }
 
         public void Awake()
         {
-            // TODO:
-            // Save system
-            // very future TODO:
-            // custom models for outfits
-            // custom animations
-
             SavePath = Paths.ConfigPath;
 
             logger = Logger;
