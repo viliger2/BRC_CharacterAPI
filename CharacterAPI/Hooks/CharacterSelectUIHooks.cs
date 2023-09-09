@@ -30,7 +30,15 @@ namespace CharacterAPI.Hooks
                     // SetCharacterName replacement
                     self.characterNameLabel.text = moddedCharacter.Name;
                     // SetCharacterSelectUIMoveStyle replacement
-                    self.SetCharacterSelectUIMoveStyle(moddedCharacter.defaultMoveStyle);
+
+                    var progress = ModdedCharacterProgress.GetCharacterProgress(Core.instance.saveManager.CurrentSaveSlot.saveSlotId, moddedCharacter.GetHashCode());
+                    if (progress != null)
+                    {
+                        self.SetCharacterSelectUIMoveStyle(progress.characterProgress.moveStyle);
+                    } else
+                    {
+                        self.SetCharacterSelectUIMoveStyle(moddedCharacter.defaultMoveStyle);
+                    }
                 } else
                 {
                     CharacterAPI.logger.LogWarning($"CharacterSelectUI::SetCharacterInformation failed to setup character information for modded character {character}, replacing it with {Characters.metalHead}.");

@@ -119,6 +119,25 @@ namespace CharacterAPI
             }
         }
 
+        public static void PerformSaveValidation()
+        {
+            foreach (var saveSlot in moddedSaveSlots)
+            {
+                foreach (var characterProgress in saveSlot.Value.moddedCharacterProgress)
+                {
+                    var moddedCharacter = CharacterAPI.GetModdedCharacter(characterProgress.characterHash);
+                    if (moddedCharacter == null)
+                    {
+                        characterProgress.characterProgress.character = Characters.NONE;
+                    }
+                    else
+                    {
+                        characterProgress.characterProgress.character = moddedCharacter.characterEnum;
+                    }
+                }
+            }
+        }
+
         public static async void SaveAsync()
         {
             string filePath = Path.Combine(CharacterAPI.SavePath, MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);

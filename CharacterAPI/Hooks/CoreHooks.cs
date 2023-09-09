@@ -33,6 +33,8 @@ namespace CharacterAPI.Hooks
             {
                 ModdedCharacterProgress.PerformSaveCleanUp();
             }
+            // Maybe in the future, but for now we don't need it
+            //ModdedCharacterProgress.PerformSaveValidation();
         }
 
         private static void AddModdedCharacterSfx(Core self, CharacterAPI.ModdedCharacter moddedCharacter)
