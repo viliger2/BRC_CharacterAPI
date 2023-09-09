@@ -7,15 +7,13 @@ If you don't know how\want to compile a plugin, ActualMandM made a pluginless lo
 
 All assmblies in this repository are stripped down versions made with NStrip.
 
-Please consider making a back-up of your save. I've made necessary precautions in the code so you shouldn't bork your save, but just to be safe until I get enough reports that things are stable - back it up.
-
 ## Known issues
-* Custom personal sprays load as gray squares if you painted custom personal spray and then disabled the character or entire CharacterAPI.
+* Custom personal graffiti load as gray squares if you painted custom personal graffiti and then disabled CharacterAPI.
 
 ## Short term goals (things that will most likely come in near future)
 * ~~Implement custom voice support~~ Done
 * ~~Implement save system for custom characters (currently nothing you setup your custom character with saves on exit)~~ Done
-* Maybe rewrite parts of the code, since by the end I got lazy and started using On hooks instead of IL
+* ~~Maybe rewrite parts of the code, since by the end I got lazy and started using On hooks instead of IL~~ Done
 
 ## Long term goals (aka never ever)
 * Custom models as outfits
