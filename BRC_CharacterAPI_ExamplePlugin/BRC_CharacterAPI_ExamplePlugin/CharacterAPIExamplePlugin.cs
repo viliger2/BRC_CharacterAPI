@@ -68,6 +68,11 @@ namespace BeatCharacterAPI
             // and select a character as base
             //beat.tempAudioBase = Characters.legendFace;
 
+            // Set this to true if your character can blink. By "can" I mean that it has nessesary blend shapes
+            // setup for changing face texture from open eyes to closed via scaling face meshes.
+            // Beat doesn't have visible eyes, nor do I have enough expirience with modeling to implement it.
+            //beat.canBlink = false;
+
             // This line finalized and add character to the game
             // if you character is not in the game, remember to check the log for errors
             beat.CreateModdedCharacter();
