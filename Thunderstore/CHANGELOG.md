@@ -1,4 +1,15 @@
 <details>
+<summary>0.8.0 </summary>
+
+* Minor performance improvements.
+* Fixed issue where loaded modded character didn't use correct move style on character select screen.
+* Added option to allow modded characters to blink. Set canBlink to true in your ModdedCharacterConstructor to use it.
+	* _This is not a magic solution where you set it and it will just work. You will need to setup Shape keys (or blend shapes as Unity calls them) in Blender or your modelling software of choice. Base game characters that can blink use two meshes with open and closed eyes and then scale them from 0 to 100 and in reverse for blinking. This feature is not tested, but should be fairly straightforward to implement if you have experience with shape keys._
+* Removed save warning from mod page.
+	* _It has been almost two weeks since initial release and I haven't got a single report of broken save file. So I am going to assume that saving works as intended and there is no risk of breaking your save file._
+</details>
+
+<details>
 <summary>0.7.1 </summary>
 
 * Fixed an issue where all AIs (and by extension SlowCrew players) were loaded as last played custom character.
