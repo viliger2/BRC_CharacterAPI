@@ -1,16 +1,14 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using CharacterAPI.CompatibilityPlugins;
-//using CharacterAPI.CompatibilityPlugins;
 using CharacterAPI.Hooks;
 using Reptile;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 namespace CharacterAPI
 {
-    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.8.0")]
+    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.0")]
     [BepInDependency("BrcCustomCharacters", BepInDependency.DependencyFlags.SoftDependency)]
     public class CharacterAPI : BaseUnityPlugin
     {
