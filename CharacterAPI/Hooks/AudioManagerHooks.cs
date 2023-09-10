@@ -7,7 +7,6 @@ namespace CharacterAPI.Hooks
 {
     public class AudioManagerHooks
     {
-        // TODO: write proper audio management, for now just replace character with whatever people want
         public static void InitHooks()
         {
             On.Reptile.AudioManager.GetCharacterVoiceSfxCollection += AudioManager_GetCharacterVoiceSfxCollection;

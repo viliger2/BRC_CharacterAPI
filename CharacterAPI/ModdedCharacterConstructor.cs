@@ -1,4 +1,5 @@
 ﻿using Reptile;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace CharacterAPI
 {
-    public class ModdedCharacterConstructor
+    public class ModdedCharacterConstructor : IDisposable
     {
         public const int CHARACTER_STARTING_VALUE = (int)Characters.MAX + 1;
         public const int VOICE_STARTING_VALUE = (int)SfxCollectionID.MAX + 1;
@@ -56,12 +57,13 @@ namespace CharacterAPI
         public List<AudioClip> audioClips = new List<AudioClip>();
 
         public bool usesCustomShader = false;
+
         private List<Outfit> outfits = new List<Outfit>();
 
         private PersonalGraffiti personalGraffiti;
 
         // oh god, getting all graffiti names from GraffitiArt.Titles via reflection
-        private FieldInfo[] graffitiNamesFieldInfos = typeof(Reptile.GraffitiArt.Titles).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).Where(fi => fi.IsLiteral && !fi.IsInitOnly).ToArray();
+        private static FieldInfo[] graffitiNamesFieldInfos = typeof(Reptile.GraffitiArt.Titles).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).Where(fi => fi.IsLiteral && !fi.IsInitOnly).ToArray();
 
         public void AddOutfit(Material material, string name = "")
         {
@@ -208,7 +210,7 @@ namespace CharacterAPI
             if (audioClips.Count > 0)
             {
                 newCharacter.voiceId = (SfxCollectionID)(VOICE_STARTING_VALUE + ModdedCharacter.ModdedCharacters.Count);
-                newCharacter.audioClips = audioClips;
+                newCharacter.audioClips = new List<AudioClip>(audioClips);
             }
             else
             {
@@ -315,11 +317,11 @@ namespace CharacterAPI
                 return false;
             }
 
-            if(!animator.transform.Find("mesh"))
-            {
-                CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have mesh named \"mesh\" at prefab's base. Skipping this character...");
-                return false;
-            }
+            //if(!animator.transform.Find("mesh"))
+            //{
+            //    CharacterAPI.logger.LogWarning($"Character {characterName} doesn't have mesh named \"mesh\" at prefab's base. Skipping this character...");
+            //    return false;
+            //}
 
             transformsFound = CheckForSpecificTransformInRoot(root, "head", transformsFound);
             transformsFound = CheckForSpecificTransformInRoot(root, "jetpack", transformsFound);
@@ -352,6 +354,12 @@ namespace CharacterAPI
             }
 
             return boneExists && bonesFound;
+        }
+
+        public void Dispose()
+        {
+            audioClips.Clear();
+            outfits.Clear();
         }
     }
 }
