@@ -77,3 +77,6 @@ Thunderstore/Thunderstore.zip
 BRC_CharacterAPI_ExamplePlugin/ExamplePluginUnity/Assets/AssetBundles/
 Assemblies/BrcCustomCharacters.dll
 Assemblies/BrcCustomCharactersLib.dll
+Assemblies/brcCustomCharacters/BrcCustomCharacters.dll
+Assemblies/brcCustomCharacters/BrcCustomCharactersAPI.dll
+Assemblies/brcCustomCharacters/BrcCustomCharactersLib.dll

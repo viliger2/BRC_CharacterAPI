@@ -20,7 +20,7 @@ namespace CharacterAPI.Hooks
             {
                 // just mirror what BRCCC does, but no need to check if character is modded or not
                 // if we can't fine transforms then it doesn't support it, simple as that
-                // hopefully together with BRCCC it won't break it
+                // hopefully together with BRCCC it won't break
                 Transform offsetL = self.footL.Find("skateOffsetL");
                 Transform offsetR = self.footR.Find("skateOffsetR");
                 if (offsetL && offsetR)

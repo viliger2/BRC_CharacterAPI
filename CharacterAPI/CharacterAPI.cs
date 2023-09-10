@@ -48,9 +48,9 @@ namespace CharacterAPI
             SaveSlotDataHooks.InitHooks();
             StyleSwitchMenuHooks.InitHooks();
 
-            if (LoadBRCCCharacters.Value)
+            if (BrcCustomCharactersCompat.enabled && LoadBRCCCharacters.Value)
             {
-                OtherMethodsLoaders.BrcCustomCharactersLoader.LoadBrcCCharacters(Path.Combine(System.IO.Path.GetDirectoryName(Info.Location), "BrcCustomCharacters"));
+                BrcCustomCharactersCompat.LoadBrcCCharacters(Path.Combine(System.IO.Path.GetDirectoryName(Info.Location), "BrcCustomCharacters"));
                 //OtherMethodsLoaders.BrcCustomCharactersLoader.LoadBrcCCharacters(Path.Combine(Paths.PluginPath, "brcCustomCharacters", "CharAssets"));
             }
 
