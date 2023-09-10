@@ -18,6 +18,9 @@ namespace CharacterAPI
 
         public void Awake()
         {
+            AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(System.IO.Path.GetDirectoryName(Info.Location), "Assets", "silence"));
+            CoreHooks.silence = bundle.LoadAsset<AudioClip>("silence");
+
             SavePath = Paths.ConfigPath;
 
             logger = Logger;

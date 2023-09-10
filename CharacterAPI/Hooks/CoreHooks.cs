@@ -7,13 +7,15 @@ namespace CharacterAPI.Hooks
     public class CoreHooks
     {
         // for sound effects
-        private const string VOICE_BOOST = "_boost";
-        private const string VOICE_COMBO = "_combo";
-        private const string VOICE_DIE = "_die";
-        private const string VOICE_DIEFALL = "_falldamage";
-        private const string VOICE_GETHIT = "_gethit";
-        private const string VOICE_JUMP = "_jump";
-        private const string VOICE_TALK = "_talk";
+        internal const string VOICE_BOOST = "_boost";
+        internal const string VOICE_COMBO = "_combo";
+        internal const string VOICE_DIE = "_die";
+        internal const string VOICE_DIEFALL = "_falldamage";
+        internal const string VOICE_GETHIT = "_gethit";
+        internal const string VOICE_JUMP = "_jump";
+        internal const string VOICE_TALK = "_talk";
+
+        internal static AudioClip silence = null;
 
         public static void InitHooks()
         {
@@ -59,11 +61,17 @@ namespace CharacterAPI.Hooks
 
         private static SfxCollection.RandomAudioClipContainer CreateRandomAudioClipContainer(AudioClipID audioClipID, List<AudioClip> audioClipSourceList, string nameCondition)
         {
+            var clips = audioClipSourceList.FindAll(x => x.name.Contains(nameCondition));
+            if(clips.Count== 0)
+            {
+                clips.Add(silence);
+            }
+
             return new SfxCollection.RandomAudioClipContainer
             {
                 clipID = audioClipID,
                 lastRandomClip = 0,
-                clips = audioClipSourceList.FindAll(x => x.name.Contains(nameCondition)).ToArray()
+                clips = clips.ToArray()
             };
         }
     }
