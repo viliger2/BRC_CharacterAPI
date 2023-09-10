@@ -32,6 +32,21 @@
 	  <Reference Include="UnityEngine.UI">
 		  <HintPath>..\Assemblies\UnityEngine.UI.dll</HintPath>
 		  <Private>False</Private>
-	  </Reference>	  
+	  </Reference>
+	  <Reference Include="BrcCustomCharactersLib">
+		  <HintPath>..\Assemblies\BrcCustomCharactersLib.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="BrcCustomCharacters">
+		  <HintPath>..\Assemblies\BrcCustomCharacters.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\silence">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
