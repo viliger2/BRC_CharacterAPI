@@ -5,13 +5,10 @@ You can find a guide on making custom characters [here](https://github.com/vilig
 
 If you don't know how\want to compile a plugin, ActualMandM made a pluginless loader for compatable asset bundles. You can find it [here](https://thunderstore.io/c/bomb-rush-cyberfunk/p/MandM/BRC_CharacterLoader/) together with instructions.
 
+Characters created for [BRCCustomCharacters](https://github.com/SGiygas/BrcCustomCharacters) are also supported, either via putting asset bundles in "BrcCustomCharacters" folder inside plugin folder or via loading them directly from BRCCC. Read the changelog for version 0.9.0 for detailed explanation of how it works. **You need BRCCustomCharacters for both features to work.**
+
 ## Known issues
 * Custom personal graffiti load as gray squares if you painted custom personal graffiti and then disabled CharacterAPI.
-
-## Short term goals (things that will most likely come in near future)
-* ~~Implement custom voice support~~ Done
-* ~~Implement save system for custom characters (currently nothing you setup your custom character with saves on exit)~~ Done
-* ~~Maybe rewrite parts of the code, since by the end I got lazy and started using On hooks instead of IL (will be done once I get enought reports that new version is stable)~~ Done
 
 ## Long term goals (aka never ever)
 * Custom models as outfits
@@ -19,4 +16,6 @@ If you don't know how\want to compile a plugin, ActualMandM made a pluginless lo
 * Custom animations
 
 ## I am a mod maker, why does my character have skates angled at wrong position? 
-I've made a wiki page covering on how to fix it. You can find it [here](https://github.com/viliger2/BRC_CharacterAPI/wiki/Why-are-my-skates-at-the-wrong-angle%3F).
+Now you can use skateOffsetL and skateOffsetR transorms to position skates. I'll write a wiki page sometime in the future. 
+
+If you want the old method of fixing via bones you can still find it [here](https://github.com/viliger2/BRC_CharacterAPI/wiki/Why-are-my-skates-at-the-wrong-angle%3F).

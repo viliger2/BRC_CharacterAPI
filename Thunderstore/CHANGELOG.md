@@ -1,4 +1,23 @@
 <details>
+<summary>0.9.0 </summary>
+
+* Implemented BRCCustomCharacters (BRCCC) support. 
+	* Support is done in two modes - loading asset bundles created for BRCCC or loading them directly from BRCCC, controlled by options "Load BRCCustomCharacters" and "Load BRCCustomCharacters from Plugin" respectively. 
+	* **You will need BRCCustomCharacters for this feature to work.**
+	* First mode loads asset bundles directly, you have to put them inside "BrcCustomCharacters" folder.
+	* Second mode loads characters directly from BRCCC plugin, HOWEVER, and this is important, **replacements will still be in place.** Let's say you have a character that replaces Red, his voice and his personal graffiti and then decide to enable this option. Then Red will be replaced by new character, his voice and graffiti also will be replaced AND you will get a new character separate from Red's replacement. In essence, you will get two characters. This mode is here mostly for comparability and maybe SlopCrew. 
+	* First mode is enabled by default, second is disabled. You can have both on and off at the same time.
+	* This is not tested with SlopCrew, but what most likely will happen is that your "new" character will show up as Red to everyone else and your "replacement" character will show up as usual if other people have the mod.
+		* _Please, send all crash logs to me via discord or github, this is highly experimental._
+* Added silent sound for custom characters to prevent crashing.
+	* _If character had custom sounds but one of seven needed arrays was empty for whatever reason, whenever the game would try to play a sound from that array it would crash. I decided to just add silent sounds to that array so crashes would stop. It is kinda hacky, but it is substantially easier than fixing it in code._
+* Added custom shader support. Set usesCustomShader to true and your character's shader will not be replaced with game's shader.
+* Implemented BRCCC skates positioning support.
+	* _If you don't like fixing bones - well, here we are. It was mostly done for comparability with BRCCC characters, but can be used for plugin characters all the same. Just add skateOffsetL and skateOffsetR transforms to footL and footR respectively and adjust the position\angle. Then the mod will automatically find them and if present will use their position for skates._
+
+</details>
+
+<details>
 <summary>0.8.0 </summary>
 
 * Minor performance improvements.
