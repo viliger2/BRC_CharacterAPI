@@ -25,6 +25,7 @@ namespace CharacterAPI
         public SfxCollectionID voiceId;
         public List<AudioClip> audioClips = new List<AudioClip>();
         public bool canBlink;
+        public bool usesCustomShader;
 
         private int? Hash = null;
 

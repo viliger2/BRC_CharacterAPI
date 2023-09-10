@@ -40,7 +40,10 @@ namespace CharacterAPI.Hooks
                             Material material = moddedCharacter.loadedCharacterMaterials[skinIndex];
                             if(material)
                             {
-                                CharacterAPI.AttemptToFixShaderCharacter(outfitSwitchMenu.player.characterConstructor.characterLoader, material);
+                                if (!moddedCharacter.usesCustomShader)
+                                {
+                                    CharacterAPI.AttemptToFixShaderCharacter(outfitSwitchMenu.player.characterConstructor.characterLoader, material);
+                                }
                             }
                             return material;
                         } else

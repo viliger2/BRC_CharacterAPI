@@ -55,6 +55,7 @@ namespace CharacterAPI
 
         public List<AudioClip> audioClips = new List<AudioClip>();
 
+        public bool usesCustomShader = false;
         private List<Outfit> outfits = new List<Outfit>();
 
         private PersonalGraffiti personalGraffiti;
@@ -165,6 +166,7 @@ namespace CharacterAPI
             }
 
             newCharacter.canBlink = canBlink;
+            newCharacter.usesCustomShader = usesCustomShader;
 
             newCharacter.defaultOutfit = Mathf.Clamp(defaultOutfit, 0, 3);
             newCharacter.defaultMoveStyle = defaultMoveStyle;

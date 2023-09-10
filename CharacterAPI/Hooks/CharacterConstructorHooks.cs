@@ -27,7 +27,10 @@ namespace CharacterAPI.Hooks
                 SkinnedMeshRenderer meshRenderer = characterVisual.GetComponentInChildren<SkinnedMeshRenderer>();
                 if (meshRenderer)
                 {
-                    CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, meshRenderer.material);
+                    if (!moddedCharacter.usesCustomShader)
+                    {
+                        CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, meshRenderer.material);
+                    }
                 }
                 characterVisual.Init(character, controller, IK, setGroundAngleLimit);
                 characterVisual.gameObject.SetActive(true);
@@ -52,8 +55,11 @@ namespace CharacterAPI.Hooks
             {
                 Material material = moddedCharacter.loadedCharacterMaterials[outfit];
 
-                // should probably move this to initialization, but I am not sure how to load game's objects without Adressables
-                CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, material);
+                if (!moddedCharacter.usesCustomShader)
+                {
+                    // should probably move this to initialization, but I am not sure how to load game's objects without Adressables
+                    CharacterAPI.AttemptToFixShaderCharacter(self.characterLoader, material);
+                }
 
                 return material;
             }
