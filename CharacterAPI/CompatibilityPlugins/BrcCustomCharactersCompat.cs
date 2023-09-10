@@ -1,16 +1,12 @@
-﻿using BrcCustomCharacters.Utility;
-using BrcCustomCharactersLib;
+﻿using BrcCustomCharactersLib;
 using CharacterAPI.Hooks;
 using Reptile;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using UnityEngine;
+using static CharacterAPI.OtherMethodsLoaders.BrcCustomCharactersLoader;
 
 namespace CharacterAPI.CompatibilityPlugins
 {
@@ -85,20 +81,6 @@ namespace CharacterAPI.CompatibilityPlugins
             //_characterVisuals.Clear();
             //_characterReplacementIds.Clear();
             //characterObjects.Clear();
-        }
-
-        private static bool HasVoicesGood(this CharacterDefinition definition)
-        {
-            return definition.VoiceDie.Length != 0 && definition.VoiceDieFall.Length != 0 && definition.VoiceTalk.Length != 0 && definition.VoiceBoostTrick.Length != 0 && definition.VoiceCombo.Length != 0 && definition.VoiceGetHit.Length != 0 && definition.VoiceJump.Length != 0;
-        }
-
-        private static void LoadVoicesFromArray(List<AudioClip> audioClips, AudioClip[] source, string type)
-        {
-            foreach (AudioClip clip in source)
-            {
-                clip.name += type;
-                audioClips.Add(clip);
-            }
         }
     }
 }

@@ -1,12 +1,8 @@
 ﻿using BrcCustomCharactersLib;
 using CharacterAPI.Hooks;
 using Reptile;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CharacterAPI.OtherMethodsLoaders
@@ -20,10 +16,10 @@ namespace CharacterAPI.OtherMethodsLoaders
             foreach (string filePath in Directory.GetFiles(pluginPath))
             {
                 AssetBundle bundle = AssetBundle.LoadFromFile(filePath);
-                if(bundle != null)
+                if (bundle != null)
                 {
                     CharacterDefinition definition = GetCharacterDefinition(bundle);
-                    if(definition)
+                    if (definition)
                     {
                         using (var moddedCharacter = new ModdedCharacterConstructor())
                         {
@@ -61,14 +57,8 @@ namespace CharacterAPI.OtherMethodsLoaders
                             moddedCharacter.CreateModdedCharacter();
                         }
                     }
-
                 }
             }
-        }
-
-        private static bool HasVoicesGood(this CharacterDefinition definition)
-        {
-            return definition.VoiceDie.Length != 0 && definition.VoiceDieFall.Length != 0 && definition.VoiceTalk.Length != 0 && definition.VoiceBoostTrick.Length != 0 && definition.VoiceCombo.Length != 0 && definition.VoiceGetHit.Length != 0 && definition.VoiceJump.Length != 0;
         }
 
         private static CharacterDefinition GetCharacterDefinition(AssetBundle bundle)
@@ -87,11 +77,16 @@ namespace CharacterAPI.OtherMethodsLoaders
             return null;
         }
 
-        private static void LoadVoicesFromArray(List<AudioClip> audioClips, AudioClip[] source, string type)
+        public static bool HasVoicesGood(this CharacterDefinition definition)
+        {
+            return definition.VoiceDie.Length != 0 && definition.VoiceDieFall.Length != 0 && definition.VoiceTalk.Length != 0 && definition.VoiceBoostTrick.Length != 0 && definition.VoiceCombo.Length != 0 && definition.VoiceGetHit.Length != 0 && definition.VoiceJump.Length != 0;
+        }
+
+        public static void LoadVoicesFromArray(List<AudioClip> audioClips, AudioClip[] source, string type)
         {
             foreach (AudioClip clip in source)
             {
-                AudioClip newClip = UnityEngine.Object.Instantiate(clip);
+                AudioClip newClip = Object.Instantiate(clip);
                 newClip.name += type;
                 audioClips.Add(newClip);
             }
