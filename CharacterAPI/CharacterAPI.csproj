@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="OtherMethodsLoaders\**" />
+    <EmbeddedResource Remove="OtherMethodsLoaders\**" />
+    <None Remove="OtherMethodsLoaders\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -33,14 +39,6 @@
 		  <HintPath>..\Assemblies\UnityEngine.UI.dll</HintPath>
 		  <Private>False</Private>
 	  </Reference>
-	  <Reference Include="BrcCustomCharactersLib">
-		  <HintPath>..\Assemblies\BrcCustomCharactersLib.dll</HintPath>
-		  <Private>False</Private>
-	  </Reference>
-	  <Reference Include="BrcCustomCharacters">
-		  <HintPath>..\Assemblies\BrcCustomCharacters.dll</HintPath>
-		  <Private>False</Private>
-	  </Reference>
 	  
   </ItemGroup>
 
@@ -48,9 +46,5 @@
     <None Update="Assets\silence">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="OtherMethodsLoaders\" />
   </ItemGroup>
 </Project>
