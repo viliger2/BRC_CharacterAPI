@@ -1,4 +1,12 @@
 <details>
+<summary>0.9.1 </summary>
+
+* Removed BRCCustomCharacters (BRCCC) support and moved it to its own plugin.
+	* _I separated loading of BRCCC into its own plugin loader which can be found [here](https://thunderstore.io/c/bomb-rush-cyberfunk/p/viliger/CharacterAPI_BRCCCLoader). I did it because of two reasons. First, implementing loader directly into CharacterAPI transforms it from library into a mod, I want to keep it as a library so if someone wants to either take over from me, implement their own solution to loading characters or make their own loader, we would be 100% sure that the library itself won't do anything. Second, BRCCC is licensed under GPL-3 and it prevents me from adding necessary dependencies to this mod (that's why we needed BRCCC in the first place with 0.9.0). Separate loader solves both issues. If you used BRCCC characters with 0.9.0 you don't have to do anything but to download a new loader, it will grab everything automatically._
+
+</details>
+
+<details>
 <summary>0.9.0 </summary>
 
 * Implemented BRCCustomCharacters (BRCCC) support. 

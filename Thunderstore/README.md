@@ -5,7 +5,7 @@ You can find a guide on making custom characters [here](https://github.com/vilig
 
 If you don't know how\want to compile a plugin, ActualMandM made a pluginless loader for compatable asset bundles. You can find it [here](https://thunderstore.io/c/bomb-rush-cyberfunk/p/MandM/BRC_CharacterLoader/) together with instructions.
 
-Characters created for [BRCCustomCharacters](https://github.com/SGiygas/BrcCustomCharacters) are also supported, either via putting asset bundles in "BrcCustomCharacters" folder inside plugin folder or via loading them directly from BRCCC. Read the changelog for version 0.9.0 for detailed explanation of how it works. **You need BRCCustomCharacters for both features to work.**
+Characters made for [BrcCustomCharacters](https://github.com/SGiygas/BrcCustomCharacters) can be loaded with a help of [CharacterAPI_BRCCCLoader](https://thunderstore.io/c/bomb-rush-cyberfunk/p/viliger/CharacterAPI_BRCCCLoader).
 
 ## Known issues
 * Custom personal graffiti load as gray squares if you painted custom personal graffiti and then disabled CharacterAPI.
