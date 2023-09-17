@@ -7,13 +7,13 @@ namespace CharacterAPI.Hooks
     public class CoreHooks
     {
         // for sound effects
-        internal const string VOICE_BOOST = "_boost";
-        internal const string VOICE_COMBO = "_combo";
-        internal const string VOICE_DIE = "_die";
-        internal const string VOICE_DIEFALL = "_falldamage";
-        internal const string VOICE_GETHIT = "_gethit";
-        internal const string VOICE_JUMP = "_jump";
-        internal const string VOICE_TALK = "_talk";
+        public const string VOICE_BOOST = "_boost";
+        public const string VOICE_COMBO = "_combo";
+        public const string VOICE_DIE = "_die";
+        public const string VOICE_DIEFALL = "_falldamage";
+        public const string VOICE_GETHIT = "_gethit";
+        public const string VOICE_JUMP = "_jump";
+        public const string VOICE_TALK = "_talk";
 
         internal static AudioClip silence = null;
 

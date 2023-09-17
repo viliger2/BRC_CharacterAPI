@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CharacterAPI
 {
-    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.1")]
+    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.2")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;
@@ -16,14 +16,22 @@ namespace CharacterAPI
 
         public static string SavePath;
 
+        public static string NewSavePath;
+
         public static ConfigEntry<bool> PerformSaveCleanUp;
 
         public void Awake()
         {
             AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(System.IO.Path.GetDirectoryName(Info.Location), "Assets", "silence"));
+            if (!bundle)
+            {
+                logger.LogError("Asset bundle \"silence\" is either not present or broken. Please consider reinstalling CharacterAPI from scratch.");
+                return;
+            }
             CoreHooks.silence = bundle.LoadAsset<AudioClip>("silence");
 
             SavePath = Paths.ConfigPath;
+            NewSavePath = Paths.BepInExRootPath + "\\CharacterAPI";
             DllPath = Info.Location;
 
             logger = Logger;

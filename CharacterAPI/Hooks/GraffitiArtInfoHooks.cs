@@ -69,15 +69,7 @@ namespace CharacterAPI.Hooks
 
         private static GraffitiLoader? GetGraffitiLoader()
         {
-            foreach (var assetLoader in Reptile.Core.Instance.assets.assetLoaders)
-            {
-                if (assetLoader is Reptile.GraffitiLoader)
-                {
-                    return assetLoader as Reptile.GraffitiLoader;
-                }
-            }
-
-            return null;
+            return Reptile.Core.Instance.assets.GetAssetsLoader<Reptile.GraffitiLoader>();
         }
     }
 }

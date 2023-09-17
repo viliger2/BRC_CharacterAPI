@@ -8,6 +8,13 @@ namespace CharacterAPI
     {
         internal static List<ModdedCharacter> ModdedCharacters = new List<ModdedCharacter>();
 
+        public class SkatesPosition
+        {
+            public Vector3 scale;
+            public Vector3 position;
+            public Quaternion rotation;
+        }
+
         public string Name;
         public string[] outfitNames;
         public Material[] loadedCharacterMaterials;
@@ -26,6 +33,8 @@ namespace CharacterAPI
         public List<AudioClip> audioClips = new List<AudioClip>();
         public bool canBlink;
         public bool usesCustomShader;
+        public SkatesPosition positionL;
+        public SkatesPosition positionR;
 
         private int? Hash = null;
 

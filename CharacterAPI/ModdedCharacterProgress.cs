@@ -8,9 +8,10 @@ namespace CharacterAPI
 {
     public class ModdedCharacterProgress
     {
-        public const int MODDED_CHARACTER_SAVE_VERSION = 1;
-        public const string MODDED_CHARACTER_SAVE_FOLDER = "CharacterAPISaves";
-        public const string MODDED_CHARACTER_SAVE_FILE_NAME = "ModdedCharactersProgress.capi";
+        private const int MODDED_CHARACTER_SAVE_VERSION = 1;
+        private const string MODDED_CHARACTER_SAVE_FOLDER = "CharacterAPISaves";
+        private const string MODDED_CHARACTER_SAVE_FILE_NAME = "ModdedCharactersProgress.capi";
+        private const string NEW_MODDED_CHARACTER_SAVE_FOLDER = "Saves";
 
         public class ModdedSaveSlot
         {
@@ -140,7 +141,7 @@ namespace CharacterAPI
 
         public static async void SaveAsync()
         {
-            string filePath = Path.Combine(CharacterAPI.SavePath, MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
+            string filePath = Path.Combine(CharacterAPI.NewSavePath, NEW_MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
 
             try
             {
@@ -179,7 +180,22 @@ namespace CharacterAPI
 
         public static async void LoadAsync()
         {
-            string filePath = Path.Combine(CharacterAPI.SavePath, MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
+            string oldFilePath = Path.Combine(CharacterAPI.SavePath, MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
+            string filePath = Path.Combine(CharacterAPI.NewSavePath, NEW_MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
+
+            try
+            {
+                if(File.Exists(oldFilePath))
+                {
+                    Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
+                    File.Move(oldFilePath, filePath);
+                    CharacterAPI.logger.LogMessage("Save file is moved to BepInEx\\CharacterAPI\\Saves.");
+                }
+            }
+            catch(Exception e)
+            {
+                CharacterAPI.logger.LogWarning($"Exception during moving save file to new location. Exception: {e}, Message: {e.Message}.");
+            }
 
             try
             {
@@ -234,6 +250,5 @@ namespace CharacterAPI
                 File.Delete(filePath);
             }
         }
-
     }
 }
