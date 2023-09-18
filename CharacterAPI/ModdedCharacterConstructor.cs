@@ -166,7 +166,7 @@ namespace CharacterAPI
 
             if (!CheckGraffitiName(name))
             {
-                CharacterAPI.logger.LogWarning($"Personal graffiti {name}'s name for character {this.characterName} collides with existing game graffiti. Skipping personal graffiti...");
+                CharacterAPI.logger.LogWarning($"Personal graffiti's name {name} for character {this.characterName} collides with existing game graffiti. Skipping personal graffiti...");
                 return;
             }
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CharacterAPI
 {
-    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.2")]
+    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.3")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;

@@ -146,7 +146,7 @@ namespace CharacterAPI
             try
             {
                 // we don't need to check, create directory does nothing if it exists
-                Directory.CreateDirectory(Path.Combine(CharacterAPI.SavePath, MODDED_CHARACTER_SAVE_FOLDER));
+                Directory.CreateDirectory(Path.Combine(CharacterAPI.NewSavePath, NEW_MODDED_CHARACTER_SAVE_FOLDER));
 
                 using (var stream = File.Open(filePath, FileMode.Create))
                 {
