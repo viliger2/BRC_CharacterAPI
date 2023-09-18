@@ -1,4 +1,20 @@
 <details>
+<summary>0.9.3 </summary>
+
+* Fixed an issue with creating new save file.
+
+</details>
+
+<details>
+<summary>0.9.2 </summary>
+
+* Moved save location from config folder to CharacterAPI folder under Bepin
+	* _As it turns out r2modman empties entire mod folder on each update. While it doesn't matter for saves, it matters for characters created with Loaders, so I decided to move everything related to this mod into its own folder. For CharacterAPI you don't have to do anything, save will be moved automatically. For CharacterAPI BRCCCLoader back up your characters before updating via r2modman, if you update manually they will be moved to new location._
+* Added a check and a message if prefab with silent sound is not present or damaged.
+
+</details>
+
+<details>
 <summary>0.9.1 </summary>
 
 * Removed BRCCustomCharacters (BRCCC) support and moved it to its own plugin.

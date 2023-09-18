@@ -7,6 +7,8 @@ If you don't know how\want to compile a plugin, ActualMandM made a pluginless lo
 
 Characters made for [BrcCustomCharacters](https://github.com/SGiygas/BrcCustomCharacters) can be loaded with a help of [CharacterAPI_BRCCCLoader](https://thunderstore.io/c/bomb-rush-cyberfunk/p/viliger/CharacterAPI_BRCCCLoader).
 
+Saves are stored inside BepInEx\CharacterAPI\Saves.
+
 ## Known issues
 * Custom personal graffiti load as gray squares if you painted custom personal graffiti and then disabled CharacterAPI.
 
@@ -16,6 +18,6 @@ Characters made for [BrcCustomCharacters](https://github.com/SGiygas/BrcCustomCh
 * Custom animations
 
 ## I am a mod maker, why does my character have skates angled at wrong position? 
-Now you can use skateOffsetL and skateOffsetR transorms to position skates. I'll write a wiki page sometime in the future. 
+Now you can use skateOffsetL and skateOffsetR transforms to position skates. I'll write a wiki page sometime in the future. 
 
 If you want the old method of fixing via bones you can still find it [here](https://github.com/viliger2/BRC_CharacterAPI/wiki/Why-are-my-skates-at-the-wrong-angle%3F).
