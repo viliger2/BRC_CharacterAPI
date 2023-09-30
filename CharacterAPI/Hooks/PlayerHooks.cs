@@ -64,7 +64,7 @@ namespace CharacterAPI.Hooks
             orig(self, setOutfit);
 
             // SAVE_MODDED_CHARACTERS
-            ModdedCharacterProgress.SaveAsync();
+            ModdedCharacterProgress.Save();
         }
 
         private static void Player_PlayVoice(ILContext il)

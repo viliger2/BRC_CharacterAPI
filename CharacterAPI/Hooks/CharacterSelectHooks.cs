@@ -49,7 +49,7 @@ namespace CharacterAPI.Hooks
             }
 
             // SAVE_MODDED_CHARACTERS
-            ModdedCharacterProgress.SaveAsync();
+            ModdedCharacterProgress.Save();
         }
 
         private static void CharacterSelect_CreateCharacterSelectCharacter(On.Reptile.CharacterSelect.orig_CreateCharacterSelectCharacter orig, CharacterSelect self, Characters character, int numInCircle, CharacterSelectCharacter.CharSelectCharState startState)

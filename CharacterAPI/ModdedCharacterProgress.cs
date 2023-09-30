@@ -139,14 +139,14 @@ namespace CharacterAPI
             }
         }
 
-        public static async void SaveAsync()
+        public static void Save()
         {
             string filePath = Path.Combine(CharacterAPI.NewSavePath, NEW_MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
 
             try
             {
                 // we don't need to check, create directory does nothing if it exists
-                Directory.CreateDirectory(Path.Combine(CharacterAPI.NewSavePath, NEW_MODDED_CHARACTER_SAVE_FOLDER));
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
                 using (var stream = File.Open(filePath, FileMode.Create))
                 {
@@ -178,7 +178,7 @@ namespace CharacterAPI
             }
         }
 
-        public static async void LoadAsync()
+        public static void Load()
         {
             string oldFilePath = Path.Combine(CharacterAPI.SavePath, MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);
             string filePath = Path.Combine(CharacterAPI.NewSavePath, NEW_MODDED_CHARACTER_SAVE_FOLDER, MODDED_CHARACTER_SAVE_FILE_NAME);

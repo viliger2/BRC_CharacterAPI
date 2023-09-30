@@ -18,7 +18,7 @@ namespace CharacterAPI.Hooks
             orig(self, clickedButton, skinIndex);
 
             // SAVE_MODDED_CHARACTERS
-            ModdedCharacterProgress.SaveAsync();
+            ModdedCharacterProgress.Save();
         }
     }
 }

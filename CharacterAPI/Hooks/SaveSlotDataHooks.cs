@@ -5,7 +5,6 @@ using static CharacterAPI.ModdedCharacterProgress;
 
 namespace CharacterAPI.Hooks
 {
-    // TODO: implement custom character saving, maybe make it a separate file?
     public class SaveSlotDataHooks
     {
         public static void InitHooks()

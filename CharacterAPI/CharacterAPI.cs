@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CharacterAPI
 {
-    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.3")]
+    [BepInPlugin("com.Viliger.CharacterAPI", "CharacterAPI", "0.9.4")]
     public class CharacterAPI : BaseUnityPlugin
     {
         public static BepInEx.Logging.ManualLogSource logger;
@@ -51,7 +51,7 @@ namespace CharacterAPI
             SaveSlotDataHooks.InitHooks();
             StyleSwitchMenuHooks.InitHooks();
 
-            ModdedCharacterProgress.LoadAsync();
+            ModdedCharacterProgress.Load();
         }
 
         public static void AttemptToFixShaderCharacter(CharacterLoader? loader, Material material)

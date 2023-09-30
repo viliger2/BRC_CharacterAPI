@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CharacterAPI
 {
-    internal class ModdedCharacter
+    public class ModdedCharacter
     {
         internal static List<ModdedCharacter> ModdedCharacters = new List<ModdedCharacter>();
 
