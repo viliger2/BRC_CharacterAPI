@@ -1,4 +1,21 @@
 <details>
+<summary>0.9.5 </summary>
+
+* Added BepinIncompatability attribute for CrewBoom and BombRushMP/All City Network.
+  * _This basically means mod would not load at all if it detects either of these two mods. Actually CrewBoom already had incompat implementation with CharacterAPI, but since selecting custom CharacterAPI characters with BombRushMP/All City Network outright crashes the game I was asked to just make the mods incompatible. Don't expect any fixes, I've moved on from modding BRC._
+
+</details>
+<details>
+<summary>0.9.4 </summary>
+
+* Fixed an issue with game crashing on exit while trying to save vanilla save file.
+	* _Didn't have that many reports on this one, but decided to "fix" it anyway. And by "fixing" I mean that you might encounter a small stutter whenever modded characters are saved (changing character, outfit and ride). I'll look into fixing stutter in the future._
+* Made ModdedCharacter class public.
+	* _This is for mod support, if someone wants to get information whether modded character exists or not. Done mainly to support SlopCrew, but obviously it is now open to everyone._
+
+</details>
+
+<details>
 <summary>0.9.3 </summary>
 
 * Fixed an issue with creating new save file.
